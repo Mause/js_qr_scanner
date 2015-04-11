@@ -6,12 +6,13 @@ navigator.getUserMedia = navigator.getUserMedia ||
 function QRScanner() {}
 QRScanner.prototype = {
     gum_success: function gum_success(stream) {
+        alert("Success!");
         this.video.src = window.URL.createObjectURL(stream)
         this.video.play();
     },
 
     gum_failure: function gum_failure(error) {
-        console.alert("Failed!");
+        alert("Failed!");
     },
 
     timerCallback: function timerCallback() {
@@ -72,11 +73,11 @@ QRScanner.prototype = {
 
 $(document).ready(function(){
 
-    console.alert(qrcode);
+    alert(qrcode);
 
     try {
         new QRScanner().ready()
     } catch (e) {
-        console.alert(e);
+        alert(e);
     }
 })

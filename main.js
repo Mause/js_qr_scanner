@@ -138,7 +138,7 @@ QRScanner.prototype = {
         )
         this.getUserMedia(videos[0].id)
         document.getElementById("debug").innerHTML = (
-            "" + videos.length + " video sources: " +
+            "" + videos.length + " video sources -> " +
             videos.map(function(q) { return q.facing; })
         )
     },

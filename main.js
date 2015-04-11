@@ -135,15 +135,8 @@ QRScanner.prototype = {
             sources
             .filter(function(q) { return q.kind == "video" })
         )
-
         var env = videos.filter(function(q) { return q.facing == "environment" });
-
         if (env.length != 0) videos = env;
-
-        // var selected_video = videos[this.videos_idx];
-        // this.videos_idx = (this.videos_idx + 1) % videos.length;
-
-        // this.getUserMedia(selected_video.id);
 
         this.getUserMedia(videos[0].id);
 
@@ -152,7 +145,7 @@ QRScanner.prototype = {
         )
     },
 
-    swapCamera: function swapCamera() {
+    getCamera: function getCamera() {
         getSources().then($.proxy(this.getSourcesCallback, this));
     },
 
@@ -183,7 +176,7 @@ QRScanner.prototype = {
             "password"
         );
 
-        this.swapCamera();
+        this.getCamera();
     }
 }
 

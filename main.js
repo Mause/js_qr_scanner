@@ -154,7 +154,7 @@ QRScanner.prototype = {
 
     getUserMedia: function getUserMedia(id) {
         var video = (
-            (this.id) ?
+            (id !== undefined) ?
             {optional: [{sourceId: id}]} :
             {}
         )

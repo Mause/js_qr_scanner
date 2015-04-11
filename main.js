@@ -3,6 +3,12 @@ navigator.getUserMedia = navigator.getUserMedia ||
                          navigator.mozGetUserMedia ||
                          navigator.msGetUserMedia;
 
+function alert(str) {
+    document.getElementById("alert").innerHTML += (
+        "" + str + "<br/>"
+    )
+}
+
 function QRScanner() {}
 QRScanner.prototype = {
     gum_success: function gum_success(stream) {

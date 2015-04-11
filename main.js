@@ -177,10 +177,14 @@ QRScanner.prototype = {
 var inst = new QRScanner();
 
 
-$(document).ready(function(){
-    try {
-        inst.ready()
-    } catch (e) {
-        alert(e);
-    }
-})
+if (navigator.getUserMedia) {
+    $(document).ready(function(){
+        try {
+            inst.ready()
+        } catch (e) {
+            alert(e);
+        }
+    })
+} else {
+    alert("No getUserMedia support");
+}

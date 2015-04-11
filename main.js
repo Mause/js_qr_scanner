@@ -11,7 +11,7 @@ QRScanner.prototype = {
     },
 
     gum_failure: function gum_failure(error) {
-        console.log("Failed!")
+        console.alert("Failed!");
     },
 
     timerCallback: function timerCallback() {
@@ -35,7 +35,7 @@ QRScanner.prototype = {
 
     qrcode_callback: function qrcode_callback(data) {
         document.getElementById("data").innerHTML = data;
-        console.log(data);
+        // console.log(data);
     },
 
     play_callback: function play_callback() {
@@ -71,5 +71,9 @@ QRScanner.prototype = {
 
 
 $(document).ready(function(){
-    new QRScanner().ready()
+    try {
+        new QRScanner().ready()
+    } catch (e) {
+        console.alert(e);
+    }
 })

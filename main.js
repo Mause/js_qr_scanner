@@ -70,7 +70,6 @@ function getSources() {
     var def = $.Deferred();
 
     MediaStreamTrack.getSources(function(sources){
-        debugger;
         def.resolve(sources);
     });
 
@@ -131,19 +130,21 @@ QRScanner.prototype = {
         this.timerCallback();
     },
 
-    swapCamera: function swapCamera() {
-        getSources().then(
-            function(sources) {
-                var videos = (
-                    sources
-                    .filter(function(q) { return q.kind == "video" })
-                    .filter(function(q) { return q.id != this.current_stream })
-                )
-                document.getElementById("debug").innerHTML = (
-                    "" + videos.length + " video sources"
-                )
-            }
+    getSourcesCallback: function getSourcesCallback(sources) {
+        var videos = (
+            sources
+            .filter(function(q) { return q.kind == "video" })
+            .filter(function(q) { return q.id != this.current_stream })
         )
+        this.getUserMedia(videos[0].id)
+        document.getElementById("debug").innerHTML = (
+            "" + videos.length + " video sources: " +
+            videos.map(function(q) { return q.facing; })
+        )
+    },
+
+    swapCamera: function swapCamera() {
+        getSources().then($.proxy(this.getSourcesCallback, this));
     },
 
     getUserMedia: function getUserMedia(id) {

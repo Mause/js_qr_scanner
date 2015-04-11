@@ -64,7 +64,7 @@ QrAPI.prototype = {
 function getSources() {
     var def = $.Deferred();
 
-    MediaStreamTrack.getSources(function(sources){
+    window.MediaStreamTrack.getSources(function(sources){
         def.resolve(sources);
     });
 
@@ -141,7 +141,11 @@ QRScanner.prototype = {
     },
 
     getCamera: function getCamera() {
-        getSources().then($.proxy(this.getSourcesCallback, this));
+        if (window.MediaStreamTrack) {
+            getSources().then($.proxy(this.getSourcesCallback, this));
+        } else {
+            this.getUserMedia();
+        }
     },
 
     getUserMedia: function getUserMedia(id) {

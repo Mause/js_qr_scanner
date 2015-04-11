@@ -71,6 +71,9 @@ QRScanner.prototype = {
 
 
 $(document).ready(function(){
+
+    console.alert(qrcode);
+
     try {
         new QRScanner().ready()
     } catch (e) {

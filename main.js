@@ -138,11 +138,13 @@ QRScanner.prototype = {
 
         var selected_video = videos[this.videos_idx];
         this.videos_idx = (this.videos_idx + 1) % videos.length;
+
         this.getUserMedia(selected_video.id);
 
         document.getElementById("debug").innerHTML = (
             "" + videos.length + " video sources -> " +
-            videos.map(function(q) { return q.facing; })
+            videos.map(function(q) { return q.facing; }) +
+            ", using " + selected_video.facing
         )
     },
 

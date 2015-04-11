@@ -136,10 +136,16 @@ QRScanner.prototype = {
             .filter(function(q) { return q.kind == "video" })
         )
 
-        var selected_video = videos[this.videos_idx];
-        this.videos_idx = (this.videos_idx + 1) % videos.length;
+        var env = videos.filter(function(q) { return q.facing == "environment" });
 
-        this.getUserMedia(selected_video.id);
+        if (env.length != 0) videos = env;
+
+        // var selected_video = videos[this.videos_idx];
+        // this.videos_idx = (this.videos_idx + 1) % videos.length;
+
+        // this.getUserMedia(selected_video.id);
+
+        this.getUserMedia(videos[0].id);
 
         document.getElementById("debug").innerHTML = (
             "" + videos.length + " video sources -> " +

@@ -82,7 +82,6 @@ QRScanner.prototype = {
     gum_success: function gum_success(stream) {
         console.log(stream);
         this.video.src = window.URL.createObjectURL(stream)
-        document.getElementById("data").innerHTML += "... displaying " + stream.facing;
     },
 
     gum_failure: function gum_failure(error) {
@@ -134,10 +133,6 @@ QRScanner.prototype = {
         if (env.length != 0) videos = env;
 
         this.getUserMedia(videos[0].id);
-
-        document.getElementById("debug").innerHTML = (
-            "video sources -> " + videos.map(function(q) { return q.facing; }).join(", ")
-        )
     },
 
     getCamera: function getCamera() {

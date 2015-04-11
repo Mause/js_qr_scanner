@@ -3,11 +3,6 @@ navigator.getUserMedia = navigator.getUserMedia ||
                          navigator.mozGetUserMedia ||
                          navigator.msGetUserMedia;
 
-// function alert(str) {
-//     document.getElementById("alert").innerHTML += (
-//         "" + str + "<br/>"
-//     )
-// }
 
 function QrAPI(apiUrl, apiPassword) { this.apiUrl = apiUrl; }
 QrAPI.prototype = {

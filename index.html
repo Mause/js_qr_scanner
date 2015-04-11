@@ -23,15 +23,27 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript" src="main.js"></script>
+
+    <style type="text/css">
+        @media (screen and (min-width: 1236px)) {
+            canvas {
+                width: 100%;
+            }
+        }
+        canvas {
+            border: 1px solid black;
+        }
+        video {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <canvas style="border: 1px solid black;" id="qr-canvas"></canvas>
-    <video style="display:none" autoplay id="video"></video>
+    <canvas id="qr-canvas"></canvas>
+    <video autoplay id="video"></video>
 
     <br/><div id="debug"></div>
     <br/><div id="data"></div>
     <br/><div id="alert"></div>
 </body>
 </html>
-
-

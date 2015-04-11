@@ -108,7 +108,9 @@ QRScanner.prototype = {
         try {
             qrcode.decode();
         } catch (e) {
-            console.log("Error: " + e);
+            if (e !== "Couldn't find enough finder patterns") {
+                console.log("Error: " + e);
+            }
         }
     },
 

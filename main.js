@@ -77,7 +77,7 @@ function getSources() {
 }
 
 function QRScanner() {
-    this.current_stream = null;
+    this.videos_idx = 0;
     this.api = null;
     qrcode.debug = true;
 
@@ -134,9 +134,12 @@ QRScanner.prototype = {
         var videos = (
             sources
             .filter(function(q) { return q.kind == "video" })
-            .filter(function(q) { return q.id != this.current_stream })
         )
-        this.getUserMedia(videos[0].id)
+
+        var selected_video = videos[this.videos_idx];
+        this.videos_idx = (this.videos_idx + 1) % videos.length;
+        this.getUserMedia(selected_video.id);
+
         document.getElementById("debug").innerHTML = (
             "" + videos.length + " video sources -> " +
             videos.map(function(q) { return q.facing; })
@@ -174,7 +177,7 @@ QRScanner.prototype = {
             "password"
         );
 
-        this.getUserMedia();
+        this.swapCamera();
     }
 }
 

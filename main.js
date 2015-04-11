@@ -71,10 +71,15 @@ function getSources() {
     return def;
 }
 
+function color(c) {
+    document.getElementsByClassName("match")[0].style['background-color'] = c;
+}
+
 function QRScanner() {
     this.videos_idx = 0;
     this.api = null;
     qrcode.debug = true;
+    this.lock = false;
 
     qrcode.callback = $.proxy(this.qrcode_callback, this);
 }
@@ -109,7 +114,12 @@ QRScanner.prototype = {
 
     qrcode_callback: function qrcode_callback(data) {
         document.getElementById("data").innerHTML = data;
+        while(this.lock) {}
+        this.lock = true;
+        color("green");
         this.api.scanRequest(data);
+        this.lock = false;
+        setTimeout('color("red")', 500);
     },
 
     play_callback: function play_callback() {

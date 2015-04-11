@@ -87,7 +87,7 @@ QRScanner.prototype = {
     gum_success: function gum_success(stream) {
         console.log(stream);
         this.video.src = window.URL.createObjectURL(stream)
-        this.current_stream = stream.id;
+        document.getElementById("data").innerHTML += "... displaying " + stream.facing;
     },
 
     gum_failure: function gum_failure(error) {

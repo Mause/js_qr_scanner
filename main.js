@@ -66,15 +66,29 @@ QrAPI.prototype = {
     }
 }
 
-function QRScanner() {}
+function getSources() {
+    var def = $.Deferred();
+
+    MediaStreamTrack.getSources(function(sources){
+        debugger;
+        def.resolve(sources);
+    });
+
+    return def;
+}
+
+function QRScanner() {
+    this.current_stream = null;
+    this.api = null;
+    qrcode.debug = true;
+
+    qrcode.callback = $.proxy(this.qrcode_callback, this);
+}
 QRScanner.prototype = {
     gum_success: function gum_success(stream) {
-        // alert("Success!");
+        console.log(stream);
         this.video.src = window.URL.createObjectURL(stream)
-        this.api = new QrAPI(
-            "http://requestb.in/14zv6j91",
-            "password"
-        );
+        this.current_stream = stream.id;
     },
 
     gum_failure: function gum_failure(error) {
@@ -117,33 +131,58 @@ QRScanner.prototype = {
         this.timerCallback();
     },
 
+    swapCamera: function swapCamera() {
+        getSources().then(
+            function(sources) {
+                var videos = (
+                    sources
+                    .filter(function(q) { return q.kind == "video" })
+                    .filter(function(q) { return q.id != this.current_stream })
+                )
+                document.getElementById("debug").innerHTML = (
+                    "" + videos.length + " video sources"
+                )
+            }
+        )
+    },
+
+    getUserMedia: function getUserMedia(id) {
+        var video = (
+            (this.id) ?
+            {optional: [{sourceId: id}]} :
+            {}
+        )
+
+        navigator.getUserMedia(
+            {'video': video},
+            $.proxy(this.gum_success, this),
+            this.gum_failure
+        )
+    },
+
     ready: function ready() {
         'use strict';
         this.video = document.getElementById("video");
         this.c1 = document.getElementById("qr-canvas");
         this.ctx = this.c1.getContext("2d");
-        this.api = null;
 
         this.video.addEventListener("play", this.play_callback.bind(this), false);
 
-        qrcode.callback = $.proxy(this.qrcode_callback, this);
-        qrcode.debug = true;
+        this.api = new QrAPI(
+            "http://requestb.in/14zv6j91",
+            "password"
+        );
 
-        navigator.getUserMedia(
-            {video: {}},
-            $.proxy(this.gum_success, this),
-            this.gum_failure
-        )
+        this.getUserMedia();
     }
 }
 
+var inst = new QRScanner();
+
 
 $(document).ready(function(){
-
-    // alert(qrcode);
-
     try {
-        new QRScanner().ready()
+        inst.ready()
     } catch (e) {
         alert(e);
     }

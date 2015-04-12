@@ -188,8 +188,8 @@ QRScanner.prototype = {
         this.video.addEventListener("play", this.play_callback.bind(this), false);
 
         this.api = new QrAPI(
-            "http://requestb.in/14zv6j91",
-            "password"
+            "/ticket/signin",
+            prompt("API password?")
         );
 
         this.getCamera();

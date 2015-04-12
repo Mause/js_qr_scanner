@@ -10,7 +10,6 @@ function QRScanner() {
 }
 QRScanner.prototype = {
     gum_success: function gum_success(stream) {
-        console.log(stream);
         this.video.src = window.URL.createObjectURL(stream)
     },
 

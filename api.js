@@ -4,13 +4,7 @@ function QrAPI(apiUrl, apiPassword) {
 }
 QrAPI.prototype = {
     getHistory: function getHistory() {
-        return $.getJSON(
-            this.apiUrl,
-            {
-                qrcode: "",
-                password: this.apiPassword
-            }
-        );
+        return this.scanRequest("");
     },
 
     scanRequest: function scanRequest(barcode) {
@@ -21,7 +15,7 @@ QrAPI.prototype = {
                 "qrcode": barcode,
                 "password": this.apiPassword
             },
-            this.scanRequestSuccess,
+            null,
             'json'
         )
     }

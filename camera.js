@@ -1,0 +1,52 @@
+navigator.getUserMedia = Modernizr.prefixed("getUserMedia", navigator);
+
+
+function getSources() {
+    var def = $.Deferred();
+
+    window.MediaStreamTrack.getSources(function(sources){
+        def.resolve(sources);
+    });
+
+    return def;
+}
+
+
+function getSourcesCallback(sources) {
+    var videos = (
+        sources
+        .filter(function(q) { return q.kind == "video" })
+    )
+    var env = videos.filter(function(q) { return q.facing == "environment" });
+    if (env.length != 0) videos = env;
+
+    return getUserMedia(videos[0].id);
+}
+
+
+function getCamera() {
+    if (typeof MediaStreamTrack !== "undefined") {
+        return getSources().then(getSourcesCallback);
+    } else {
+        return this.getUserMedia();
+    }
+}
+
+
+function getUserMedia(id) {
+    var video = (
+        (id !== undefined) ?
+        {optional: [{sourceId: id}]} :
+        {}
+    )
+
+    var def = $.Deferred();
+
+    navigator.getUserMedia(
+        {'video': video},
+        def.resolve,
+        def.reject
+    );
+
+    return def;
+}

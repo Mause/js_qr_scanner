@@ -118,7 +118,7 @@ QRScanner.prototype = {
         }
     },
 
-    qrcode_callback: function qrcode_callback(data) {
+    qrcode_callback: _.debounce(function qrcode_callback(data) {
         document.getElementById("data").innerHTML = data;
         while(this.lock) {}
         this.lock = true;
@@ -126,7 +126,7 @@ QRScanner.prototype = {
         this.api.scanRequest(data);
         this.lock = false;
         setTimeout('color("red")', 500);
-    },
+    }, 500),
 
     play_callback: function play_callback() {
         setTimeout(

@@ -10,6 +10,46 @@ function getSources() {
     return def;
 }
 
+
+function getSourcesCallback(sources) {
+    var videos = (
+        sources
+        .filter(function(q) { return q.kind == "video" })
+    )
+    var env = videos.filter(function(q) { return q.facing == "environment" });
+    if (env.length != 0) videos = env;
+
+    return getUserMedia(videos[0].id);
+}
+
+function getCamera() {
+    if (typeof MediaStreamTrack !== "undefined") {
+        return getSources().then(getSourcesCallback);
+    } else {
+        return this.getUserMedia();
+    }
+}
+
+function getUserMedia(id) {
+    var video = (
+        (id !== undefined) ?
+        {optional: [{sourceId: id}]} :
+        {}
+    )
+
+    var def = $.Deferred();
+
+    navigator.getUserMedia(
+        {'video': video},
+        def.resolve,
+        def.reject
+    );
+
+    return def;
+}
+
+
+
 function color(c) {
     document.getElementsByClassName("match")[0].style['background-color'] = c;
 }
@@ -79,39 +119,6 @@ QRScanner.prototype = {
         this.timerCallback();
     },
 
-    getSourcesCallback: function getSourcesCallback(sources) {
-        var videos = (
-            sources
-            .filter(function(q) { return q.kind == "video" })
-        )
-        var env = videos.filter(function(q) { return q.facing == "environment" });
-        if (env.length != 0) videos = env;
-
-        this.getUserMedia(videos[0].id);
-    },
-
-    getCamera: function getCamera() {
-        if (typeof MediaStreamTrack !== "undefined") {
-            getSources().then($.proxy(this.getSourcesCallback, this));
-        } else {
-            this.getUserMedia();
-        }
-    },
-
-    getUserMedia: function getUserMedia(id) {
-        var video = (
-            (id !== undefined) ?
-            {optional: [{sourceId: id}]} :
-            {}
-        )
-
-        navigator.getUserMedia(
-            {'video': video},
-            $.proxy(this.gum_success, this),
-            this.gum_failure
-        )
-    },
-
     ready: function ready() {
         'use strict';
         this.video = document.getElementById("video");
@@ -125,7 +132,10 @@ QRScanner.prototype = {
             prompt("API password?")
         );
 
-        this.getCamera();
+        getCamera().then(
+            $.proxy(this.gum_success, this),
+            $.proxy(this.gum_failure, this)
+        )
     }
 }
 

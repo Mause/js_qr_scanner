@@ -86,8 +86,6 @@ function QRScanner() {
     this.api = null;
     qrcode.debug = true;
     this.lock = false;
-
-    qrcode.callback = $.proxy(this.qrcode_callback, this);
 }
 QRScanner.prototype = {
     gum_success: function gum_success(stream) {
@@ -112,7 +110,7 @@ QRScanner.prototype = {
 
     do_decode: function do_decode() {
         try {
-            qrcode.decode();
+            this.qrcode_callback(qrcode.decode());
         } catch (e) {
             if (e !== "Couldn't find enough finder patterns") {
                 console.log("Error: " + e);

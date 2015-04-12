@@ -1,9 +1,4 @@
-navigator.getUserMedia = navigator.getUserMedia ||
-                         navigator.webkitGetUserMedia ||
-                         navigator.mozGetUserMedia ||
-                         navigator.msGetUserMedia;
-
-
+navigator.getUserMedia = Modernizr.prefixed("getUserMedia", navigator);
 
 function getSources() {
     var def = $.Deferred();

@@ -158,7 +158,7 @@ QRScanner.prototype = {
     },
 
     getCamera: function getCamera() {
-        if (window.MediaStreamTrack) {
+        if (typeof MediaStreamTrack !== "undefined") {
             getSources().then($.proxy(this.getSourcesCallback, this));
         } else {
             this.getUserMedia();

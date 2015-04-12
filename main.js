@@ -120,6 +120,12 @@ QRScanner.prototype = {
 
     qrcode_callback: _.debounce(function qrcode_callback(data) {
         document.getElementById("data").innerHTML = data;
+
+        if (!/^[0-9]+\$\$[a-z0-9]+\$\$[A-Za-z0-9]+$/.exec(data)) {
+            document.getElementById("data").innerHTML += " is invalid";
+            return;
+        }
+
         while(this.lock) {}
         this.lock = true;
         color("green");

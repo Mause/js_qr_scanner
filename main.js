@@ -166,27 +166,39 @@ QRScanner.prototype = {
 
         this.api = new QrAPI(
             "/ticket/signin",
-            prompt("API password?")
+            this.getPassword()
         );
 
         getCamera().then(
             $.proxy(this.gum_success, this),
             $.proxy(this.gum_failure, this)
         )
+    },
+
+    getPassword: function getPassword() {
+        if (localStorage.getItem("password") == null) {
+            localStorage.setItem("password", prompt("API password?"));
+        }
+
+        return localStorage.getItem("password");
     }
 }
 
 var inst = new QRScanner();
 
 
-if (navigator.getUserMedia) {
-    $(document).ready(function(){
-        try {
+$(document).ready(function(){
+    if (!navigator.getUserMedia) {
+        alert("No getUserMedia support");
+
+    } else if (!Modernizr.localstorage) {
+        alert("No localstorage support");
+
+    } else {
+        // try {
             inst.ready()
-        } catch (e) {
-            alert(e);
-        }
-    })
-} else {
-    alert("No getUserMedia support");
-}
+        // } catch (e) {
+        //     alert(e);
+        // }
+    }
+})

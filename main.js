@@ -102,10 +102,47 @@ QRScanner.prototype = {
         while(this.lock) {}
         this.lock = true;
         color("green");
-        this.api.scanRequest(data);
-        this.lock = false;
-        setTimeout('color("red")', 500);
+        this.api.scanRequest(data).then(
+            $.proxy(this.scanRequestSuccess, this)
+        )
     }, 500),
+
+    scanRequestSuccess: function scanRequestSuccess(data) {
+        this.lock = false;
+        setTimeout('color("red")', 100);
+
+        if (data.status < 1) {
+            var error;
+
+            if (data.error.length <= 0) {
+                error = "Unknown error occured";
+            } else {
+                error = data.error;
+            }
+            alert(error);
+
+        } else if (data.paid < 1){
+            alert("Hasn't paid!");
+
+        } else {
+            var user = data.user.user,
+                firstName = user.first_name,
+                lastName = user.last_name,
+                successMessage = "";
+
+            if (firstName.length > 0) {
+                successMessage = firstName;
+                if (lastName.length > 0) {
+                    successMessage += lastName;
+                }
+            } else {
+                successMessage = "Sign-in successful";
+            }
+
+            console.log(data);
+            alert(successMessage);
+        }
+    },
 
     play_callback: function play_callback() {
         setTimeout(

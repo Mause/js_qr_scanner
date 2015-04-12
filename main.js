@@ -4,7 +4,10 @@ navigator.getUserMedia = navigator.getUserMedia ||
                          navigator.msGetUserMedia;
 
 
-function QrAPI(apiUrl, apiPassword) { this.apiUrl = apiUrl; }
+function QrAPI(apiUrl, apiPassword) {
+    this.apiUrl = apiUrl;
+    this.apiPassword = apiPassword;
+}
 QrAPI.prototype = {
     getHistory: function getHistory() {
         return $.getJSON(

@@ -2,11 +2,9 @@ function color(c) {
     document.getElementsByClassName("match")[0].style['background-color'] = c;
 }
 
-function QRScanner() {
-    this.videos_idx = 0;
-    this.api = null;
-    qrcode.debug = true;
+function QRScanner(callback) {
     this.lock = false;
+    this.callback = callback;
 }
 QRScanner.prototype = {
     gum_success: function gum_success(stream) {
@@ -49,11 +47,49 @@ QRScanner.prototype = {
         while(this.lock) {}
         this.lock = true;
         color("green");
-        this.api.scanRequest(data).then(
-            $.proxy(this.scanRequestSuccess, this)
-        )
+
+        this.callback(data);
     }, 500),
 
+    play_callback: function play_callback() {
+        setTimeout(
+            function(){
+                this.c1.width = this.video.videoWidth;
+                this.c1.height = this.video.videoHeight;
+            }.bind(this),
+            125
+        );
+
+        this.timerCallback();
+    },
+
+    ready: function ready() {
+        'use strict';
+        this.video = document.getElementById("video");
+        this.c1 = document.getElementById("qr-canvas");
+        this.ctx = this.c1.getContext("2d");
+
+        this.video.addEventListener(
+            "play", $.proxy(this.play_callback, this), false
+        );
+    },
+
+    obtainAndConnectCamera: function obtainAndConnectCamera() {
+        getCamera().then(
+            $.proxy(this.gum_success, this),
+            $.proxy(this.gum_failure, this)
+        )
+    }
+}
+
+
+
+function App() {
+    this.api = null;
+    this.camera = null;
+    this.scanner = null;
+}
+App.prototype = {
     scanRequestSuccess: function scanRequestSuccess(data) {
         this.lock = false;
         setTimeout('color("red")', 100);
@@ -91,35 +127,20 @@ QRScanner.prototype = {
         }
     },
 
-    play_callback: function play_callback() {
-        setTimeout(
-            function(){
-                this.c1.width = this.video.videoWidth;
-                this.c1.height = this.video.videoHeight;
-            }.bind(this),
-            125
+    api_caller: function api_caller(data) {
+        this.api.scanRequest(data).then(
+            $.proxy(this.scanRequestSuccess, this)
         )
-
-        this.timerCallback();
     },
 
     ready: function ready() {
-        'use strict';
-        this.video = document.getElementById("video");
-        this.c1 = document.getElementById("qr-canvas");
-        this.ctx = this.c1.getContext("2d");
-
-        this.video.addEventListener("play", this.play_callback.bind(this), false);
-
         this.api = new QrAPI(
             "/ticket/signin",
             this.getPassword()
         );
-
-        getCamera().then(
-            $.proxy(this.gum_success, this),
-            $.proxy(this.gum_failure, this)
-        )
+        this.scanner = new QRScanner(this.api_caller);
+        this.scanner.ready();
+        this.scanner.obtainAndConnectCamera();
     },
 
     getPassword: function getPassword() {
@@ -131,9 +152,8 @@ QRScanner.prototype = {
     }
 }
 
-var inst = new QRScanner();
 
-
+var inst = new App();
 $(document).ready(function(){
     if (!navigator.getUserMedia) {
         alert("No getUserMedia support");

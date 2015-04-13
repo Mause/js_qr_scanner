@@ -26,8 +26,10 @@ function getSourcesCallback(sources) {
 
 function getCamera() {
     if (typeof MediaStreamTrack !== "undefined") {
+        // if we can pick and choose which input we use
         return getSources().then(getSourcesCallback);
     } else {
+        // otherwise we shrug and take what we're given
         return this.getUserMedia();
     }
 }

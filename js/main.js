@@ -94,6 +94,11 @@ App.prototype = {
         this.lock = false;
         setTimeout('color("red")', 100);
 
+        console.log(data);
+        alert(this.messageFromData(data));
+    },
+
+    messageFromData: function messageFromData(data) {
         if (data.status < 1) {
             var error;
 
@@ -102,10 +107,10 @@ App.prototype = {
             } else {
                 error = data.error;
             }
-            alert(error);
+            return error;
 
         } else if (data.paid < 1){
-            alert("Hasn't paid!");
+            return "Hasn't paid!";
 
         } else {
             var user = data.user.user,
@@ -122,8 +127,7 @@ App.prototype = {
                 successMessage = "Sign-in successful";
             }
 
-            console.log(data);
-            alert(successMessage);
+            return successMessage;
         }
     },
 

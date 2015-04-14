@@ -144,7 +144,9 @@ App.prototype = {
             "/ticket/signin",
             this.getPassword()
         );
-        this.scanner = new QRScanner(this.api_caller);
+        this.scanner = new QRScanner(
+            $.proxy(this.api_caller, this)
+        );
         this.scanner.ready();
         this.scanner.obtainAndConnectCamera();
     },

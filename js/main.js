@@ -7,6 +7,8 @@ function QRScanner(callback) {
     this.callback = callback;
 }
 QRScanner.prototype = {
+    QR_RE: /^[0-9]+\$\$[a-z0-9]+\$\$[A-Za-z0-9]+$/,
+
     gum_success: function gum_success(stream) {
         this.video.src = window.URL.createObjectURL(stream)
     },
@@ -39,7 +41,7 @@ QRScanner.prototype = {
     qrcode_callback: _.debounce(function qrcode_callback(data) {
         document.getElementById("data").innerHTML = data;
 
-        if (!/^[0-9]+\$\$[a-z0-9]+\$\$[A-Za-z0-9]+$/.exec(data)) {
+        if (!this.QR_RE.exec(data)) {
             document.getElementById("data").innerHTML += " is invalid";
             return;
         }

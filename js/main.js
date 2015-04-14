@@ -3,7 +3,6 @@ function color(c) {
 }
 
 function QRScanner(callback) {
-    this.lock = false;
     this.callback = callback;
 }
 QRScanner.prototype = {
@@ -46,8 +45,6 @@ QRScanner.prototype = {
             return;
         }
 
-        while(this.lock) {}
-        this.lock = true;
         color("green");
 
         this.callback(data);
@@ -93,7 +90,6 @@ function App() {
 }
 App.prototype = {
     scanRequestSuccess: function scanRequestSuccess(data) {
-        this.lock = false;
         setTimeout('color("red")', 100);
 
         console.log(data);

@@ -52,7 +52,7 @@ function checkCompatibility() {
         return "No getUserMedia support";
 
     } else if (!Modernizr.localstorage) {
-        return "No localstorage support";
+        return "No localStorage support";
     }
 
     return null;
@@ -104,6 +104,7 @@ var QRScanner = React.createClass({
             return;
         }
 
+        // render the video stream to the canvas
         this.state.ctx.drawImage(this.state.video_el, 0, 0)
 
         this.do_decode();

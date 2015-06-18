@@ -18,7 +18,11 @@ function getSourcesCallback(sources) {
         .filter(function(q) { return q.kind == "video" })
     )
     var env = videos.filter(function(q) { return q.facing == "environment" });
-    if (env.length != 0) videos = env;
+    if (env.length != 0) {
+        // if we couldn't find any forward facing camera's, default to
+        // whatever we could find
+        videos = env;
+    }
 
     return getUserMedia(videos[0].id);
 }

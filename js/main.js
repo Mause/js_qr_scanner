@@ -228,7 +228,8 @@ var LogBox = React.createClass({
 
 var DataBox = React.createClass({
     propTypes: {
-        "color": React.PropTypes.string.isRequired
+        "color": React.PropTypes.string.isRequired,
+        "data": React.PropTypes.string.isRequired
     },
 
     render: function() {
@@ -238,7 +239,7 @@ var DataBox = React.createClass({
                     <div className="match" style={{"backgroundColor": this.props.color}}>
                         &nbsp;
                     </div>
-                    <div className="left" id="data"></div>
+                    <div className="left" id="data">{this.props.data}</div>
                     <br/>
                 </div>
             </Row>
@@ -281,6 +282,7 @@ var App = React.createClass({
     getInitialState: function() {
         return {
             "color": "red",
+            "data": "",
             "api": null,
             "camera": null,
             "scanner": null,
@@ -365,7 +367,7 @@ var App = React.createClass({
         return (
             <div>
                 <QRScanner log={this.log} callback={this.data_callback} />
-                <DataBox color={this.state.color} />
+                <DataBox color={this.state.color} data={this.state.data} />
                 <LogBox log_messages={this.props.log_messages} />
             </div>
         );

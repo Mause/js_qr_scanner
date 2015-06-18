@@ -304,7 +304,6 @@ var App = React.createClass({
         this.api = new QrAPI(
             // "http://events.rflan.org/ticket/signin",
             "/ticket/signin",
-            // this.getPassword()
             null
         );
     },
@@ -312,14 +311,6 @@ var App = React.createClass({
     onSave: function onSave(event) {
         event.preventDefault();
         this.setState({"password": event.target.password.value})
-    },
-
-    getPassword: function getPassword() {
-        if (localStorage.getItem("password") == null) {
-            localStorage.setItem("password", prompt("API password?"));
-        }
-
-        return localStorage.getItem("password");
     },
 
     render: function() {

@@ -283,7 +283,7 @@ var App = React.createClass({
     },
 
     api_caller: function api_caller(data) {
-        return this.api.scanRequest(data).then(
+        return this.state.api.scanRequest(data).then(
             this.scanRequestSuccess.bind(this)
         )
     },
@@ -301,11 +301,13 @@ var App = React.createClass({
     },
 
     componentDidMount: function componentDidMount() {
-        this.api = new QrAPI(
-            // "http://events.rflan.org/ticket/signin",
-            "/ticket/signin",
-            null
-        );
+        this.setState({
+            "api": new QrAPI(
+                // "http://events.rflan.org/ticket/signin",
+                "/ticket/signin",
+                null
+            )
+        });
     },
 
     onSave: function onSave(event) {
@@ -314,7 +316,7 @@ var App = React.createClass({
     },
 
     render: function() {
-        if (this.api) this.api.setPassword(this.state.password);
+        if (this.state.api) this.state.api.setPassword(this.state.password);
         localStorage.setItem("password", this.state.password);
 
         var error = checkCompatibility();

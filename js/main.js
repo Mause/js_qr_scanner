@@ -163,9 +163,9 @@ var QRScanner = React.createClass({
             "play", $.proxy(this.play_callback, this), false
         );
 
-        getCamera().then(
-            $.proxy(this.gum_success, this),
-            $.proxy(this.gum_failure, this)
+        return getCamera().then(
+            this.gum_success.bind(this),
+            this.gum_failure.bind(this)
         )
     },
 
@@ -283,8 +283,8 @@ var App = React.createClass({
     },
 
     api_caller: function api_caller(data) {
-        this.api.scanRequest(data).then(
-            $.proxy(this.scanRequestSuccess, this)
+        return this.api.scanRequest(data).then(
+            this.scanRequestSuccess.bind(this)
         )
     },
 
@@ -297,7 +297,7 @@ var App = React.createClass({
         this.setState({"data": data});
         color("green");
 
-        this.api_caller(data);
+        return this.api_caller(data);
     },
 
     componentDidMount: function componentDidMount() {

@@ -179,13 +179,24 @@ var QRScanner = React.createClass({
 
     render: function render() {
         return (
-            <div className="row">
-                <div className="large-offset-3 large-6 small-12 columns">
-                    <div className="panel">
-                        <canvas id="qr-canvas"></canvas>
-                    </div>
+            <Row>
+                <div className="panel">
+                    <canvas id="qr-canvas"></canvas>
                 </div>
                 <video autoPlay={true} id="video"></video>
+            </Row>
+        );
+    }
+});
+
+
+var Row = React.createClass({
+    render: function() {
+        return (
+            <div className="row">
+                <div className="large-offset-3 large-6 small-12 columns">
+                    {this.props.children}
+                </div>
             </div>
         );
     }

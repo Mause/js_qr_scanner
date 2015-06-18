@@ -3,6 +3,9 @@ function QrAPI(apiUrl, apiPassword) {
     this.apiPassword = apiPassword;
 }
 QrAPI.prototype = {
+    setPassword: function setPassword(password) {
+        this.apiPassword = password;
+    },
     getHistory: function getHistory() {
         return this.scanRequest("");
     },

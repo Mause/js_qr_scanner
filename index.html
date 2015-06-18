@@ -16,24 +16,7 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="large-offset-3 large-6 small-12 columns">
-        <div class="panel">
-          <canvas id="qr-canvas"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <video autoplay id="video"></video>
-    <div class="row">
-      <div class="large-offset-3 large-6 columns">
-        <div class="panel">
-          <div class="match">&nbsp;</div>
-          <div class="left" id="data"></div>
-          <br/>
-        </div>
-      </div>
-    </div>
+    <div id="app"></div>
 
     <script src="js/vendor/jquery.dev.js"></script>
     <script src="js/vendor/foundation.min.js"></script>
@@ -41,9 +24,12 @@
     <script src="js/vendor/modernizr-latest.js"></script>
     <script src="js/vendor/underscore.js"></script>
 
+    <script src="js/vendor/react/react-with-addons.min.js"></script>
+    <script src="js/vendor/react/JSXTransformer.js"></script>
+
     <script src="js/camera.js"></script>
     <script src="js/api.js"></script>
-    <script src="js/main.js"></script>
+    <script type="text/jsx" src="js/main.js"></script>
     <script>
       $(document).foundation();
     </script>

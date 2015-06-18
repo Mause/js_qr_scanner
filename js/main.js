@@ -65,7 +65,13 @@ function checkCompatibility() {
 
 
 function get_timestamp(d) {
-    return d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+    function pad(str) { return ("0" + str).substr(-2); }
+
+    return (
+        pad(d.getHours())   + ":" +
+        pad(d.getMinutes()) + ":" +
+        pad(d.getSeconds())
+    );
 }
 
 

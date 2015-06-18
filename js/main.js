@@ -256,7 +256,7 @@ var PasswordBox = React.createClass({
     render: function() {
         return (
             <Row>
-                <form className="panel" onSubmit={this.props.onSave}>
+                <form className="panel" onSubmit={this.props.onSave} style={{"overflow": "auto"}}>
                     <div className="large-10 columns">
                         <input type="password" name="password" />
                     </div>

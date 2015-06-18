@@ -315,28 +315,30 @@ var App = React.createClass({
         this.setState({"password": event.target.password.value})
     },
 
+    render_error: function render_error(error) {
+        return <div>{error}</div>;
+    }
+
     render: function() {
         if (this.state.api) this.state.api.setPassword(this.state.password);
         localStorage.setItem("password", this.state.password);
 
         var error = checkCompatibility();
-        if (error === null) {
-            var second = (
-                (this.state.password === null) ?
-                <PasswordBox onSave={this.onSave} /> :
-                <DataBox log_messages={this.props.log_messages} color={this.state.color} />
-            );
-            return (
-                <div>
-                    <QRScanner log={this.log} callback={this.data_callback} />
-                    {second}
-                </div>
-            );
-        } else {
-            return (
-                <div>{error}</div>
-            );
+        if (error !== null) {
+            return render_error(error);
         }
+
+        var second = (
+            (this.state.password === null) ?
+            <PasswordBox onSave={this.onSave} /> :
+            <DataBox log_messages={this.props.log_messages} color={this.state.color} />
+        );
+        return (
+            <div>
+                <QRScanner log={this.log} callback={this.data_callback} />
+                {second}
+            </div>
+        );
     }
 })
 

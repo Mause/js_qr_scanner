@@ -329,15 +329,16 @@ var App = React.createClass({
             return render_error(error);
         }
 
-        var second = (
-            (this.state.password === null) ?
-            <PasswordBox onSave={this.onSave} /> :
-            <DataBox log_messages={this.props.log_messages} color={this.state.color} />
-        );
+        if (this.state.password === null) {
+            return <PasswordBox onSave={this.onSave} />;
+        }
+
         return (
             <div>
                 <QRScanner log={this.log} callback={this.data_callback} />
-                {second}
+                <DataBox
+                    log_messages={this.props.log_messages}
+                    color={this.state.color} />
             </div>
         );
     }

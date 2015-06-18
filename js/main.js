@@ -7,6 +7,8 @@ var log_messages_prop_type = React.PropTypes.arrayOf(
 
 
 function render_user(user) {
+    if (typeof user === "undefined") return "";
+
     var user = user.user,
         firstName = user.first_name,
         lastName = user.last_name,

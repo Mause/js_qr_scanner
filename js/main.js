@@ -227,7 +227,6 @@ var LogBox = React.createClass({
 
 var DataBox = React.createClass({
     propTypes: {
-        "log_messages": log_messages_prop_type,
         "color": React.PropTypes.string.isRequired
     },
 
@@ -241,7 +240,6 @@ var DataBox = React.createClass({
                     <div className="left" id="data"></div>
                     <br/>
                 </div>
-                <LogBox log_messages={this.props.log_messages} />
             </Row>
         );
     }
@@ -366,9 +364,8 @@ var App = React.createClass({
         return (
             <div>
                 <QRScanner log={this.log} callback={this.data_callback} />
-                <DataBox
-                    log_messages={this.props.log_messages}
-                    color={this.state.color} />
+                <DataBox color={this.state.color} />
+                <LogBox log_messages={this.props.log_messages} />
             </div>
         );
     }

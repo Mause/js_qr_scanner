@@ -97,7 +97,7 @@ var QRScanner = React.createClass({
     },
 
     gum_success: function gum_success(stream) {
-        this.props.log("Camera obtained and connected: " + stream + ", " + stream.label);
+        this.props.log("Camera obtained and connected");
         this.state.video_el.src = window.URL.createObjectURL(stream)
     },
 

@@ -210,14 +210,16 @@ var LogBox = React.createClass({
     render: function() {
         return (
             <Row>
-                {this.props.log_messages.map(function(log) {
-                    return (
-                        <div key={log.timestamp + log.message}>
-                            <p>{get_timestamp(log.timestamp)} {log.message}</p>
-                        </div>
-                    );
-                })}
-                <br/>
+                <div className="panel">
+                        {this.props.log_messages.map(function(log) {
+                        return (
+                            <div key={log.timestamp + log.message}>
+                                <p>{get_timestamp(log.timestamp)} {log.message}</p>
+                            </div>
+                        );
+                    })}
+                    <br/>
+                </div>
             </Row>
         );
     }

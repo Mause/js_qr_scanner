@@ -211,9 +211,9 @@ var LogBox = React.createClass({
         return (
             <Row>
                 <div className="panel">
-                        {this.props.log_messages.map(function(log) {
+                    {this.props.log_messages.map(function(log, idx) {
                         return (
-                            <div key={log.timestamp + log.message}>
+                            <div key={idx}>
                                 <p>{get_timestamp(log.timestamp)} {log.message}</p>
                             </div>
                         );

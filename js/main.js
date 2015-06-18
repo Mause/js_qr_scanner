@@ -1,3 +1,12 @@
+
+log_messages_prop_type = React.PropTypes.arrayOf(
+    React.PropTypes.shape({
+        "timestamp": React.PropTypes.date,
+        "message": React.PropTypes.string
+    })
+).isRequired
+
+
 function color(c) {
     document.getElementsByClassName("match")[0].style['background-color'] = c;
 }
@@ -67,6 +76,11 @@ function get_timestamp(d) {
 var QR_RE = /^[0-9]+\$\$[a-z0-9]+\$\$[A-Za-z0-9]+$/;
 
 var QRScanner = React.createClass({
+    propTypes: {
+        "log": React.PropTypes.func.isRequired,
+        "callback": React.PropTypes.func.isRequired
+    },
+
     getDefaultProps: function() {
         return {
             "callback": null,
@@ -186,6 +200,10 @@ var QRScanner = React.createClass({
 
 
 var LogBox = React.createClass({
+    propTypes: {
+        "log_messages": log_messages_prop_type
+    },
+
     render: function() {
         return (
             <div className="row">
@@ -208,6 +226,10 @@ var LogBox = React.createClass({
 
 
 var DataBox = React.createClass({
+    propTypes: {
+        "log_messages": log_messages_prop_type
+    },
+
     render: function() {
         return (
             <div>
@@ -228,6 +250,10 @@ var DataBox = React.createClass({
 
 
 var PasswordBox = React.createClass({
+    propTypes: {
+        "onSave": React.PropTypes.func.isRequired
+    },
+
     render: function() {
         return (
             <div className="row">
@@ -248,6 +274,10 @@ var PasswordBox = React.createClass({
 
 
 var App = React.createClass({
+    propTypes: {
+        "log_messages": log_messages_prop_type
+    },
+
     getDefaultProps: function() {
         return {
             "log_messages": []

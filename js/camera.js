@@ -13,11 +13,8 @@ function getSources() {
 
 
 function getSourcesCallback(sources) {
-    var videos = (
-        sources
-        .filter(function(q) { return q.kind == "video" })
-    )
-    var env = videos.filter(function(q) { return q.facing == "environment" });
+    var videos = _.where(sources, {kind: "video"}),
+        env    = _.where(videos, {facing: "environment"});
     if (env.length != 0) {
         // if we couldn't find any forward facing camera's, default to
         // whatever we could find

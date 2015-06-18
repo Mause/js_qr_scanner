@@ -98,15 +98,6 @@ var QRScanner = React.createClass({
     gum_success: function gum_success(stream) {
         this.props.log("Camera obtained and connected: " + stream + ", " + stream.label);
         this.state.video_el.src = window.URL.createObjectURL(stream)
-
-        setTimeout(
-            function() {
-                if (this.state.video_el.paused) {
-                    this.state.video_el.play(); // !!!!!
-                }
-            }.bind(this),
-            50
-        );
     },
 
     gum_failure: function gum_failure(error) {
@@ -192,7 +183,7 @@ var QRScanner = React.createClass({
                         <canvas id="qr-canvas"></canvas>
                     </div>
                 </div>
-                <video autoplay id="video"></video>
+                <video autoPlay={true} id="video"></video>
             </div>
         );
     }

@@ -1,5 +1,4 @@
-
-log_messages_prop_type = React.PropTypes.arrayOf(
+var log_messages_prop_type = React.PropTypes.arrayOf(
     React.PropTypes.shape({
         "timestamp": React.PropTypes.date,
         "message": React.PropTypes.string
@@ -113,7 +112,7 @@ var QRScanner = React.createClass({
         this.state.ctx.drawImage(this.state.video_el, 0, 0)
 
         this.do_decode();
-        setTimeout(this.timerCallback.bind(this), 125 / 4);
+        setTimeout(this.timerCallback, 125 / 4);
     },
 
     do_decode: function do_decode() {
@@ -170,8 +169,8 @@ var QRScanner = React.createClass({
         );
 
         return getCamera().then(
-            this.gum_success.bind(this),
-            this.gum_failure.bind(this)
+            this.gum_success,
+            this.gum_failure
         )
     },
 
@@ -270,9 +269,7 @@ var App = React.createClass({
     },
 
     getDefaultProps: function() {
-        return {
-            "log_messages": []
-        };
+        return {"log_messages": []};
     },
 
     getInitialState: function() {
@@ -293,9 +290,7 @@ var App = React.createClass({
     scanRequestSuccess: function scanRequestSuccess(data) {
         setTimeout(
             function() {
-                this.setState({
-                    "color": "red"
-                });
+                this.setState({"color": "red"});
             }.bind(this),
             100
         );
@@ -306,7 +301,7 @@ var App = React.createClass({
 
     api_caller: function api_caller(data) {
         return this.state.api.scanRequest(data).then(
-            this.scanRequestSuccess.bind(this)
+            this.scanRequestSuccess
         )
     },
 

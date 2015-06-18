@@ -30,7 +30,7 @@ function getCamera() {
         return getSources().then(getSourcesCallback);
     } else {
         // otherwise we shrug and take what we're given
-        return this.getUserMedia();
+        return getUserMedia();
     }
 }
 

@@ -6,11 +6,6 @@ var log_messages_prop_type = React.PropTypes.arrayOf(
 ).isRequired
 
 
-function color(c) {
-    document.getElementsByClassName("match")[0].style['background-color'] = c;
-}
-
-
 function render_user(user) {
     var user = user.user,
         firstName = user.first_name,
@@ -217,7 +212,8 @@ var LogBox = React.createClass({
 
 var DataBox = React.createClass({
     propTypes: {
-        "log_messages": log_messages_prop_type
+        "log_messages": log_messages_prop_type,
+        "color": React.PropTypes.string.isRequired
     },
 
     render: function() {
@@ -226,7 +222,9 @@ var DataBox = React.createClass({
                 <div className="row">
                     <div className="large-offset-3 large-6 columns">
                         <div className="panel">
-                            <div className="match">&nbsp;</div>
+                            <div className="match" style={{"backgroundColor": this.props.color}}>
+                                &nbsp;
+                            </div>
                             <div className="left" id="data"></div>
                             <br/>
                         </div>
@@ -274,6 +272,7 @@ var App = React.createClass({
 
     getInitialState: function() {
         return {
+            "color": "red",
             "api": null,
             "camera": null,
             "scanner": null,
@@ -311,8 +310,10 @@ var App = React.createClass({
             return;
         }
 
-        this.setState({"data": data});
-        color("green");
+        this.setState({
+            "data": data,
+            "color": "green"
+        });
 
         return this.api_caller(data);
     },

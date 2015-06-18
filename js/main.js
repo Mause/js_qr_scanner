@@ -43,9 +43,8 @@ function messageFromData(data) {
     }
 
     var user = render_user(data.user);
-
     if (user.length !== 0) {
-        message = user + " : " + message;
+        message = "<" + user + "> : " + message;
     }
 
     return message;

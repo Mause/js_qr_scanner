@@ -16,8 +16,7 @@ function getSourcesCallback(sources) {
     var videos = _.where(sources, {kind: "video"}),
         env    = _.where(videos, {facing: "environment"});
     if (env.length != 0) {
-        // if we couldn't find any forward facing camera's, default to
-        // whatever we could find
+        // if we found a forward facing camera, use that :D
         videos = env;
     }
 

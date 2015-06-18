@@ -318,7 +318,7 @@ var App = React.createClass({
 
     render_error: function render_error(error) {
         return <div>{error}</div>;
-    }
+    },
 
     render: function() {
         if (this.state.api) this.state.api.setPassword(this.state.password);

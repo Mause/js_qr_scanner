@@ -346,7 +346,9 @@ var App = React.createClass({
     render_error: function render_error(error) {
         return (
             <Row>
+                <div className="panel">
                     {error}
+                </div>
             </Row>
         );
     },

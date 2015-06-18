@@ -210,20 +210,16 @@ var LogBox = React.createClass({
 
     render: function() {
         return (
-            <div className="row">
-                <div className="large-offset-3 large-6 columns">
-                    <div className="panel">
-                        {this.props.log_messages.map(function(log) {
-                            return (
-                                <div>
-                                    <p>{get_timestamp(log.timestamp)} {log.message}</p>
-                                </div>
-                            );
-                        })}
-                        <br/>
-                    </div>
-                </div>
-            </div>
+            <Row>
+                {this.props.log_messages.map(function(log) {
+                    return (
+                        <div key={log.timestamp + log.message}>
+                            <p>{get_timestamp(log.timestamp)} {log.message}</p>
+                        </div>
+                    );
+                })}
+                <br/>
+            </Row>
         );
     }
 })
@@ -237,20 +233,16 @@ var DataBox = React.createClass({
 
     render: function() {
         return (
-            <div>
-                <div className="row">
-                    <div className="large-offset-3 large-6 columns">
-                        <div className="panel">
-                            <div className="match" style={{"backgroundColor": this.props.color}}>
-                                &nbsp;
-                            </div>
-                            <div className="left" id="data"></div>
-                            <br/>
-                        </div>
+            <Row>
+                <div className="panel">
+                    <div className="match" style={{"backgroundColor": this.props.color}}>
+                        &nbsp;
                     </div>
+                    <div className="left" id="data"></div>
+                    <br/>
                 </div>
                 <LogBox log_messages={this.props.log_messages} />
-            </div>
+            </Row>
         );
     }
 });
@@ -263,18 +255,16 @@ var PasswordBox = React.createClass({
 
     render: function() {
         return (
-            <div className="row">
-                <div className="large-12 columns">
-                    <form className="panel" onSubmit={this.props.onSave}>
-                        <div className="large-10 columns">
-                            <input type="password" name="password" />
-                        </div>
-                        <div className="large-2 columns">
-                            <input type="submit" value="Save" className="button" />
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <Row>
+                <form className="panel" onSubmit={this.props.onSave}>
+                    <div className="large-10 columns">
+                        <input type="password" name="password" />
+                    </div>
+                    <div className="large-2 columns">
+                        <input type="submit" value="Save" className="button" />
+                    </div>
+                </form>
+            </Row>
         );
     }
 });
@@ -353,7 +343,11 @@ var App = React.createClass({
     },
 
     render_error: function render_error(error) {
-        return <div>{error}</div>;
+        return (
+            <Row>
+                    {error}
+            </Row>
+        );
     },
 
     render: function() {

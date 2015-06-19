@@ -74,7 +74,7 @@ function get_timestamp(d) {
 }
 
 
-var QR_RE = /^[0-9]+\$\$[a-z0-9]+\$\$[A-Za-z0-9]+$/;
+var QR_RE = /^([0-9]+)\$\$([a-z0-9]+)\$\$([A-Za-z0-9]+)$/;
 
 var QRScanner = React.createClass({
     propTypes: {
@@ -315,13 +315,16 @@ var App = React.createClass({
     },
 
     data_callback: function data_callback(data) {
-        if (!QR_RE.exec(data)) {
+        'use strict';
+        var match = QR_RE.exec(data)
+
+        if (!match) {
             this.setState({"data": data + " is invalid"});
             return;
         }
 
         this.setState({
-            "data": data,
+            "data": match[3],
             "color": "green"
         });
 

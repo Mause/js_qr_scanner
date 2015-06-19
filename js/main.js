@@ -357,8 +357,12 @@ var App = React.createClass({
     },
 
     render: function() {
-        if (this.state.api) this.state.api.setPassword(this.state.password);
-        localStorage.setItem("password", this.state.password);
+        if (!_.isEmpty(this.state.password)) {
+            if (this.state.api) {
+                this.state.api.setPassword(this.state.password);
+            }
+            localStorage.setItem("password", this.state.password);
+        }
 
         var error = checkCompatibility();
         if (error !== null) {

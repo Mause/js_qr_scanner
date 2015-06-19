@@ -229,17 +229,29 @@ var LogBox = React.createClass({
 var DataBox = React.createClass({
     propTypes: {
         "color": React.PropTypes.string.isRequired,
-        "data": React.PropTypes.string.isRequired
+        "data": React.PropTypes.string.isRequired,
+        "clear": React.PropTypes.func.isRequired
     },
 
     render: function() {
         return (
             <Row>
-                <div className="panel">
-                    <div className="match" style={{"backgroundColor": this.props.color}}>
-                        &nbsp;
+                <div className="panel" style={{overflow:"auto"}}>
+                    <div className="large-8 columns">
+                        <div className="match" style={{"backgroundColor": this.props.color}}>
+                            &nbsp;
+                        </div>
+                        &nbsp;&nbsp;
+                        <div className="left" id="data">{this.props.data}</div>
                     </div>
-                    <div className="left" id="data">{this.props.data}</div>
+                    <div className="large-4 columns">
+                        <button
+                            onClick={this.props.clear}
+                            className="btn right"
+                            style={{margin:0}}>
+                                Clear
+                        </button>
+                    </div>
                     <br/>
                 </div>
             </Row>
@@ -283,6 +295,7 @@ var App = React.createClass({
         return {
             "color": "red",
             "data": "",
+            "scan_lock": false,
             "api": null,
             "camera": null,
             "scanner": null,
@@ -297,13 +310,6 @@ var App = React.createClass({
     },
 
     scanRequestSuccess: function scanRequestSuccess(data) {
-        setTimeout(
-            function() {
-                this.setState({"color": "red"});
-            }.bind(this),
-            100
-        );
-
         console.log(data);
         this.log(messageFromData(data));
     },
@@ -314,6 +320,14 @@ var App = React.createClass({
         )
     },
 
+    clear: function clear() {
+        this.setState({
+            "scan_lock": false,
+            "color": "red",
+            "data": ""
+        });
+    },
+
     data_callback: function data_callback(data) {
         'use strict';
         var match = QR_RE.exec(data)
@@ -322,10 +336,12 @@ var App = React.createClass({
             this.setState({"data": data + " is invalid"});
             return;
         }
+        if (this.state.scan_lock) return;
 
         this.setState({
             "data": match[3],
-            "color": "green"
+            "color": "green",
+            "scan_lock": true
         });
 
         return this.api_caller(data);
@@ -376,7 +392,7 @@ var App = React.createClass({
         return (
             <div>
                 <QRScanner log={this.log} callback={this.data_callback} />
-                <DataBox color={this.state.color} data={this.state.data} />
+                <DataBox color={this.state.color} data={this.state.data} clear={this.clear} />
                 <LogBox log_messages={this.props.log_messages} />
             </div>
         );

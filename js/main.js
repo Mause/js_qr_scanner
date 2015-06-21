@@ -5,8 +5,7 @@ var log_messages_prop_type = React.PropTypes.arrayOf(
         "timestamp": React.PropTypes.date,
         "message": React.PropTypes.string
     })
-).isRequired
-
+).isRequired;
 
 alert("1");
 

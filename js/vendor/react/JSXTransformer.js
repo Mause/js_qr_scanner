@@ -185,6 +185,8 @@ function run(code, url, options) {
   alert("Transformed");
   headEl.appendChild(scriptEl);
   alert("Appended");
+  eval(scriptEl.text);
+  alert('Evaled');
 }
 
 /**

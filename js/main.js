@@ -1,5 +1,3 @@
-alert("Evaluation begun");
-
 var log_messages_prop_type = React.PropTypes.arrayOf(
     React.PropTypes.shape({
         "timestamp": React.PropTypes.date,
@@ -7,7 +5,6 @@ var log_messages_prop_type = React.PropTypes.arrayOf(
     })
 ).isRequired;
 
-alert("1");
 
 
 function render_user(user) {
@@ -28,7 +25,6 @@ function render_user(user) {
     return rendered;
 }
 
-alert("2");
 
 function messageFromData(data) {
     var message = '';
@@ -55,7 +51,6 @@ function messageFromData(data) {
     return message;
 }
 
-alert("3");
 
 function checkCompatibility() {
     if (!navigator.getUserMedia) {
@@ -68,7 +63,6 @@ function checkCompatibility() {
     return null;
 }
 
-alert("4");
 
 function get_timestamp(d) {
     function pad(str) { return ("0" + str).substr(-2); }
@@ -80,11 +74,9 @@ function get_timestamp(d) {
     );
 }
 
-alert("5");
 
 var QR_RE = /^([0-9]+)\$\$([a-z0-9]+)\$\$([A-Za-z0-9]+)$/;
 
-alert("6");
 
 var QRScanner = React.createClass({
     propTypes: {
@@ -198,7 +190,6 @@ var QRScanner = React.createClass({
     }
 });
 
-alert("7");
 
 var Row = React.createClass({
     render: function() {
@@ -212,7 +203,6 @@ var Row = React.createClass({
     }
 });
 
-alert("8");
 
 var LogBox = React.createClass({
     propTypes: {
@@ -237,7 +227,6 @@ var LogBox = React.createClass({
     }
 })
 
-alert("9");
 
 var DataBox = React.createClass({
     propTypes: {
@@ -272,7 +261,6 @@ var DataBox = React.createClass({
     }
 });
 
-alert("10");
 
 var PasswordBox = React.createClass({
     propTypes: {
@@ -295,7 +283,6 @@ var PasswordBox = React.createClass({
     }
 });
 
-alert("11");
 
 var App = React.createClass({
     propTypes: {
@@ -414,7 +401,6 @@ var App = React.createClass({
     }
 })
 
-alert("Get ready to rumble!");
 try {
     React.render(
         <App/>,

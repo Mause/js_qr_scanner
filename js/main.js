@@ -1,3 +1,5 @@
+alert("Evaluation begun");
+
 var log_messages_prop_type = React.PropTypes.arrayOf(
     React.PropTypes.shape({
         "timestamp": React.PropTypes.date,

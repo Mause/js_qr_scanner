@@ -22,14 +22,25 @@
 
     <script type="text/javascript">
       window.onerror = function(error, url, line) {
-        $.post({
-          url: "/onerror",
-          body: {
+        $.post(
+          "/onerror",
+          {
             error: error,
             url: url,
             line: line
           }
-        });
+        );
+      }
+
+      var old_log = console.log.bind(console);
+      console.log = function() {
+        old_log.apply(console, arguments);
+        $.post(
+          "/log/" + "log",
+          {
+            args: Array.prototype.slice(arguments)
+          }
+        );
       }
     </script>
 

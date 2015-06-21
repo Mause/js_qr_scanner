@@ -180,7 +180,9 @@ function transformCode(code, url, options) {
  */
 function run(code, url, options) {
   var scriptEl = document.createElement('script');
+  alert("Transforming...");
   scriptEl.text = transformCode(code, url, options);
+  alert("Transformed");
   headEl.appendChild(scriptEl);
 }
 
@@ -317,7 +319,9 @@ function runScripts() {
     'http://facebook.github.io/react/docs/tooling-integration.html#jsx'
   );
 
+  alert("Loading scripts");
   loadScripts(jsxScripts);
+  alert("Scripts loaded and injected");
 }
 
 // Listen for load event if we're in a browser and then kick off finding and

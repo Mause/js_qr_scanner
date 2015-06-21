@@ -184,6 +184,7 @@ function run(code, url, options) {
   scriptEl.text = transformCode(code, url, options);
   alert("Transformed");
   headEl.appendChild(scriptEl);
+  alert("Appended");
 }
 
 /**

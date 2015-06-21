@@ -399,8 +399,12 @@ var App = React.createClass({
     }
 })
 
-
-React.render(
-    <App/>,
-    document.getElementById('app')
-);
+alert("Get ready to rumble!");
+try {
+    React.render(
+        <App/>,
+        document.getElementById('app')
+    );
+} catch (e) {
+    alert(e);
+}

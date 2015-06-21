@@ -19,6 +19,20 @@
     <div id="app"></div>
 
     <script src="js/vendor/jquery.dev.js"></script>
+
+    <script type="text/javascript">
+      window.onerror = function(error, url, line) {
+        $.post({
+          url: "/onerror",
+          body: {
+            error: error,
+            url: url,
+            line: line
+          }
+        });
+      }
+    </script>
+
     <script src="js/vendor/foundation.min.js"></script>
     <script src="js/vendor/llqrcode.js"></script>
     <script src="js/vendor/modernizr-latest.js"></script>

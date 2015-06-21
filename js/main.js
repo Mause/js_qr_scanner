@@ -384,7 +384,7 @@ var App = React.createClass({
 
         var error = checkCompatibility();
         if (error !== null) {
-            return render_error(error);
+            return this.render_error(error);
         }
 
         if (this.state.password === null) {

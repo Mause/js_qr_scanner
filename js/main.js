@@ -401,11 +401,20 @@ var App = React.createClass({
     }
 })
 
-try {
+function run() {
     React.render(
         <App/>,
         document.getElementById('app')
     );
-} catch (e) {
-    alert(e);
+}
+
+if (location.search.indexOf('debug') != -1) {
+    try {
+        run();
+    } catch (e) {
+        alert(e);
+        throw e;
+    }
+} else {
+    run();
 }

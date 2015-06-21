@@ -21,9 +21,21 @@
     <script src="js/vendor/jquery.dev.js"></script>
 
     <script type="text/javascript">
-      window.onerror = function(error, url, line) {
+      var ROOT = 'http://requestb.in/xuc4v6xu';
+
+      function tele(cat, dat) {
         $.post(
-          "/onerror",
+          ROOT,
+          {
+            cat: cat,
+            dat: dat
+          }
+        );
+      }
+
+      window.onerror = function(error, url, line) {
+        tele(
+          "onerror",
           {
             error: error,
             url: url,
@@ -35,8 +47,8 @@
       var old_log = console.log.bind(console);
       console.log = function() {
         old_log.apply(console, arguments);
-        $.post(
-          "/log/" + "log",
+        tele(
+          "log-log",
           {
             args: Array.prototype.slice(arguments)
           }

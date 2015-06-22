@@ -1,3 +1,5 @@
+var DEBUG = location.search.indexOf('debug') != -1;
+
 var log_messages_prop_type = React.PropTypes.arrayOf(
     React.PropTypes.shape({
         "timestamp": React.PropTypes.date,
@@ -352,8 +354,9 @@ var App = React.createClass({
     componentDidMount: function componentDidMount() {
         this.setState({
             "api": new QrAPI(
-                // "http://events.rflan.org/ticket/signin",
-                "/ticket/signin",
+                DEBUG ?
+                "/ticket/signin" :
+                "http://events.rflan.org/ticket/signin",
                 null
             )
         });
@@ -408,7 +411,7 @@ function run() {
     );
 }
 
-if (location.search.indexOf('debug') != -1) {
+if (DEBUG) {
     try {
         run();
     } catch (e) {

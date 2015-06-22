@@ -221,7 +221,7 @@ var LogBox = React.createClass({
                     {this.props.log_messages.map(function(log, idx) {
                         return (
                             <div key={idx}>
-                                <p>{get_timestamp(log.timestamp)} {log.message}</p>
+                                <p>{get_timestamp(log.timestamp)}&nbsp;{log.message}</p>
                             </div>
                         );
                     })}

@@ -117,7 +117,10 @@ var QRScanner = React.createClass({
         // render the video stream to the canvas
         this.state.ctx.drawImage(this.state.video_el, 0, 0)
 
-        this.do_decode();
+        if (!this.state.scan_lock) {
+            this.do_decode();
+        }
+
         setTimeout(this.timerCallback, 125 / 4);
     },
 

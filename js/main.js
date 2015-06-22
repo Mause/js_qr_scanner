@@ -363,6 +363,18 @@ var App = React.createClass({
                 null
             )
         });
+        $(document.body).on('keydown.spacebar', this.handleKeyDown);
+    },
+
+    componentWillUnMount: function componentWillUnMount() {
+        $(document.body).off('keydown.spacebar', this.handleKeyDown);
+    },
+
+    handleKeyDown: function handleKeyDown(event) {
+        if (event.keyCode == 32) {
+            event.preventDefault();
+            this.clear();
+        }
     },
 
     onSave: function onSave(event) {

@@ -11,21 +11,6 @@ class MainHandler(tornado.web.RequestHandler):
         self.write(open('index.html').read())
 
 
-class ONError(tornado.web.RequestHandler):
-    def post(self):
-        data = {
-            "error": self.get_body_argument('error'),
-            "url": self.get_body_argument('url'),
-            "line": self.get_body_argument('line')
-        }
-        pprint(data)
-
-
-class Log(tornado.web.RequestHandler):
-    def post(self, severity):
-        pprint((severity, self.request.body_arguments))
-
-
 def do(func):
     def handler(self):
         r = func(
@@ -47,8 +32,6 @@ from os.path import dirname
 application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/ticket/signin", Handler),
-    (r"/onerror", ONError),
-    (r"/log/(?P<severity>.*)", Log),
     (r"/(.*)", tornado.web.StaticFileHandler, {"path": dirname(__file__)})
 ], debug=True)
 

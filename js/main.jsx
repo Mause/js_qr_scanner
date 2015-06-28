@@ -121,7 +121,7 @@ var QRScanner = React.createClass({
             this.do_decode();
         }
 
-        setTimeout(this.timerCallback, 125 / 4);
+        setTimeout(this.timerCallback, 125);
     },
 
     do_decode: function do_decode() {

@@ -1,4 +1,4 @@
 webassets==0.10.1
 tornado==4.2
 PyReact==0.5.2
-
+jinja2==2.7.3

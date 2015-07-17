@@ -1,6 +1,7 @@
 """
 A proxy whilst the api doesn't have the proper csrf headers
 """
+import os
 import logging
 from os.path import dirname
 
@@ -70,5 +71,5 @@ application = tornado.web.Application([
 if __name__ == '__main__':
     build_bundle()
     my_env['js_all'].urls()
-    application.listen(8888, address='0.0.0.0')
+    application.listen(os.environ.get("PORT", 8888), address='0.0.0.0')
     tornado.ioloop.IOLoop.instance().start()

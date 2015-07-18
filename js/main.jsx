@@ -414,7 +414,30 @@ var App = React.createClass({
                 <QRScanner log={this.log} callback={this.data_callback} />
                 <DataBox color={this.state.color} data={this.state.data} clear={this.clear} />
                 <LogBox log_messages={this.props.log_messages} />
+                <Logout />
             </div>
+        );
+    }
+})
+
+var Logout = React.createClass({
+    logout: function() {
+        localStorage.removeItem("password");
+        window.location = window.location; // reload
+    },
+    render: function() {
+        return (
+            <Row>
+                <div className="panel">
+                    <div className="large-10 columns">
+                        <button
+                            onClick={this.logout}
+                            className="btn right">
+                                Logout
+                        </button>
+                    </div>
+                </div>
+            </Row>
         );
     }
 })

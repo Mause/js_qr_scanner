@@ -77,7 +77,7 @@ function get_timestamp(d) {
 }
 
 
-var QR_RE = /^([0-9]+)\$\$([a-z0-9]+)\$\$([A-Za-z0-9]+)$/;
+var QR_RE = /^([0-9]+)\$\$([a-z0-9]+)\$\$(.+)$/;
 
 
 var QRScanner = React.createClass({

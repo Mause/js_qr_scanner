@@ -461,7 +461,7 @@ var Logout = React.createClass({
     render: function() {
         return (
             <Row>
-                <div className="panel">
+                <div className="panel" style={{height: "100px"}}>
                     <div className="large-10 columns">
                         <button
                             onClick={this.logout}

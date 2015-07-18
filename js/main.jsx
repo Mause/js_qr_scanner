@@ -432,7 +432,7 @@ var Logout = React.createClass({
                     <div className="large-10 columns">
                         <button
                             onClick={this.logout}
-                            className="btn right">
+                            className="btn">
                                 Logout
                         </button>
                     </div>

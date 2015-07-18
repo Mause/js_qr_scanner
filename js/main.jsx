@@ -249,7 +249,7 @@ var DataBox = React.createClass({
                             &nbsp;
                         </div>
                         &nbsp;&nbsp;
-                        <div style="padding-left: 10px;" className="left" id="data">{this.props.data}</div>
+                        <div style={{paddingLeft: "10px"}} className="left" id="data">{this.props.data}</div>
                     </div>
                     <div className="large-4 columns">
                         <button

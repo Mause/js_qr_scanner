@@ -237,10 +237,17 @@ var DataBox = React.createClass({
     propTypes: {
         "color": React.PropTypes.string.isRequired,
         "data": React.PropTypes.string.isRequired,
-        "clear": React.PropTypes.func.isRequired
+        "clear": React.PropTypes.func.isRequired,
+        "checking": React.PropTypes.bool.isRequired,
+        "message": React.PropTypes.string.isRequired
     },
 
     render: function() {
+        if (this.props.checking) {
+            var checking_box = (<div>Checking...</div>);
+        } else if (!_.isEmpty(this.props.message)) {
+            var checking_box = (<div>{this.props.message}</div>);
+        }
         return (
             <Row>
                 <div className="panel" style={{overflow:"auto"}}>
@@ -258,6 +265,9 @@ var DataBox = React.createClass({
                             style={{margin:0}}>
                                 Clear
                         </button>
+                    </div>
+                    <div>
+                        {checking_box}
                     </div>
                     <br/>
                 </div>
@@ -306,6 +316,8 @@ var App = React.createClass({
             "api": null,
             "camera": null,
             "scanner": null,
+            "checking": false,
+            "message": '',
             "password": localStorage.getItem("password")
         }
     },
@@ -318,20 +330,35 @@ var App = React.createClass({
 
     scanRequestSuccess: function scanRequestSuccess(data) {
         console.log(data);
-        this.log(messageFromData(data));
+        var msg = messageFromData(data)
+        this.log(msg);
+        this.setState({
+            "checking": false,
+            "message": msg
+        })
+    },
+
+    scanRequestFailure: function scanRequestFailure(data) {
+        this.setState({
+            "checking": false,
+            "message": "Couldn't reach server, try again"
+        });
     },
 
     api_caller: function api_caller(data) {
         return this.state.api.scanRequest(data).then(
-            this.scanRequestSuccess
-        )
+            this.scanRequestSuccess,
+            this.scanRequestFailure
+        );
     },
 
     clear: function clear() {
         this.setState({
+            "checking": false,
             "scan_lock": false,
             "color": "red",
-            "data": ""
+            "data": "",
+            "message": ''
         });
     },
 
@@ -346,6 +373,7 @@ var App = React.createClass({
         if (this.state.scan_lock) return;
 
         this.setState({
+            "checking": true,
             "data": match[3],
             "color": "green",
             "scan_lock": true
@@ -412,7 +440,12 @@ var App = React.createClass({
         return (
             <div>
                 <QRScanner log={this.log} callback={this.data_callback} />
-                <DataBox color={this.state.color} data={this.state.data} clear={this.clear} />
+                <DataBox
+                    color={this.state.color}
+                    data={this.state.data}
+                    clear={this.clear}
+                    checking={this.state.checking}
+                    message={this.state.message} />
                 <LogBox log_messages={this.props.log_messages} />
                 <Logout />
             </div>

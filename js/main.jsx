@@ -30,6 +30,11 @@ function render_user(user) {
 }
 
 
+function was_successful(data) {
+    return !(data.status < 1 || data.paid < 1);
+}
+
+
 function messageFromData(data) {
     var message = '';
 
@@ -346,10 +351,17 @@ var App = React.createClass({
 
     scanRequestSuccess(data) {
         console.log(data);
-        var msg = messageFromData(data)
+        var msg = messageFromData(data), color;
         this.log(msg);
+
+        if (was_successful(data)) {
+            color = 'green';
+        } else {
+            color = 'red';
+        }
+
         this.setState({
-            "message_bg": "green",
+            "message_bg": color,
             "message": msg
         })
     },

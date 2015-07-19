@@ -1,5 +1,6 @@
 var DEBUG = location.search.indexOf('debug') != -1;
 var SCAN_INTERVAL = 125 / 2;
+var QR_RE = /^([0-9]+)\$\$([a-z0-9]+)\$\$(.+)$/;
 
 var log_messages_prop_type = React.PropTypes.arrayOf(
     React.PropTypes.shape({
@@ -78,7 +79,6 @@ function get_timestamp(d) {
 }
 
 
-var QR_RE = /^([0-9]+)\$\$([a-z0-9]+)\$\$(.+)$/;
 
 
 var QRScanner = React.createClass({

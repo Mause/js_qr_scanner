@@ -79,19 +79,11 @@ function get_timestamp(d) {
 }
 
 
-
-
-var QRScanner = React.createClass({
+var Screen = React.createClass({
     propTypes: {
         "log": React.PropTypes.func.isRequired,
-        "callback": React.PropTypes.func.isRequired
-    },
-
-    getDefaultProps() {
-        return {
-            "callback": null,
-            "log": null
-        };
+        "onFrame": React.PropTypes.func,
+        "flip": React.PropTypes.bool
     },
 
     getInitialState() {
@@ -109,35 +101,6 @@ var QRScanner = React.createClass({
     gum_failure(error) {
         this.props.log("Unable to connect to camera");
     },
-
-    timerCallback() {
-        if (this.state.video_el.paused || this.state.video_el.ended) {
-            return;
-        }
-
-        // render the video stream to the canvas
-        this.state.ctx.drawImage(this.state.video_el, 0, 0)
-
-        if (!this.state.scan_lock) {
-            this.do_decode();
-        }
-
-        setTimeout(this.timerCallback, SCAN_INTERVAL);
-    },
-
-    do_decode() {
-        try {
-            this.qrcode_callback(qrcode.decode());
-        } catch (e) {
-            if (e !== "Couldn't find enough finder patterns") {
-                console.log("Error: " + e);
-            }
-        }
-    },
-
-    qrcode_callback: _.debounce(function qrcode_callback(data) {
-        this.props.callback(data);
-    }, 500),
 
     play_callback() {
         var interval_id = setInterval(
@@ -162,6 +125,21 @@ var QRScanner = React.createClass({
         this.timerCallback();
     },
 
+    timerCallback() {
+        if (this.state.video_el.paused || this.state.video_el.ended) {
+            return;
+        }
+
+        // render the video stream to the canvas
+        this.state.ctx.drawImage(this.state.video_el, 0, 0)
+
+        if (this.props.onFrame) {
+            this.props.onFrame();
+        }
+
+        setTimeout(this.timerCallback, SCAN_INTERVAL);
+    },
+
     componentDidMount() {
         'use strict';
         var video_el = document.getElementById("video"),
@@ -184,13 +162,73 @@ var QRScanner = React.createClass({
         )
     },
 
+    flipStyle: {
+        "MozTransform": "scale(-1, 1)",
+        "WebkitTransform": "scale(-1, 1)",
+        "OTransform": "scale(-1, 1)",
+        'transform': "scale(-1, 1)",
+        "filter": "FlipH"
+    },
+
+    render() {
+        return (
+            <div>
+                <canvas id="qr-canvas" style={this.props.flip ? this.flipStyle : {}}></canvas>
+                <video autoPlay={true} id="video"></video>
+            </div>
+        );
+    }
+});
+
+
+var QRScanner = React.createClass({
+    propTypes: {
+        "log": React.PropTypes.func.isRequired,
+        "callback": React.PropTypes.func.isRequired,
+        "flip": React.PropTypes.bool.isRequired
+    },
+
+    getInitialState() {
+        return {"scan_lock": false};
+    },
+
+    getDefaultProps() {
+        return {
+            "callback": null,
+            "log": null
+        };
+    },
+
+    do_decode() {
+        try {
+            this.qrcode_callback(qrcode.decode());
+        } catch (e) {
+            if (e !== "Couldn't find enough finder patterns") {
+                console.error("Error: " + e);
+            }
+        }
+    },
+
+    qrcode_callback: _.debounce(function qrcode_callback(data) {
+        this.props.callback(data);
+    }, 500),
+
+    onFrame() {
+        // debugger;
+        // if (!this.state.scan_lock) {
+            this.do_decode();
+        // }
+    },
+
     render() {
         return (
             <Row>
                 <div className="panel">
-                    <canvas id="qr-canvas"></canvas>
+                    <Screen
+                        flip={this.props.flip}
+                        log={this.props.log}
+                        onFrame={this.onFrame} />
                 </div>
-                <video autoPlay={true} id="video"></video>
             </Row>
         );
     }

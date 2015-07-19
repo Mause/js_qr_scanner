@@ -83,7 +83,8 @@ var Screen = React.createClass({
     propTypes: {
         "log": React.PropTypes.func.isRequired,
         "onFrame": React.PropTypes.func,
-        "flip": React.PropTypes.bool
+        "flip": React.PropTypes.bool,
+        "onClick": React.PropTypes.func
     },
 
     getInitialState() {
@@ -134,7 +135,7 @@ var Screen = React.createClass({
         this.state.ctx.drawImage(this.state.video_el, 0, 0)
 
         if (this.props.onFrame) {
-            this.props.onFrame();
+            this.props.onFrame(this.state.ctx);
         }
 
         setTimeout(this.timerCallback, SCAN_INTERVAL);
@@ -173,7 +174,7 @@ var Screen = React.createClass({
     render() {
         return (
             <div>
-                <canvas id="qr-canvas" style={this.props.flip ? this.flipStyle : {}}></canvas>
+                <canvas id="qr-canvas" onClick={this.props.onClick} style={this.props.flip ? this.flipStyle : {}}></canvas>
                 <video autoPlay={true} id="video"></video>
             </div>
         );
@@ -185,7 +186,9 @@ var QRScanner = React.createClass({
     propTypes: {
         "log": React.PropTypes.func.isRequired,
         "callback": React.PropTypes.func.isRequired,
-        "flip": React.PropTypes.bool.isRequired
+        "flip": React.PropTypes.bool.isRequired,
+        "message": React.PropTypes.string.isRequired,
+        "message_bg": React.PropTypes.string.isRequired,
     },
 
     getInitialState() {
@@ -213,10 +216,27 @@ var QRScanner = React.createClass({
         this.props.callback(data);
     }, 500),
 
-    onFrame() {
-        // debugger;
+    onFrame(ctx) {
+        var centre_x = ctx.canvas.width / 2,
+            centre_y = ctx.canvas.height / 2
+
+        var width = 600,
+            height = 100,
+            x = centre_x - (width / 2),
+            y = centre_y - (height / 2);
+
+        if (!_.isEmpty(this.props.message)) {
+            ctx.fillStyle = this.props.message_bg;
+            ctx.fillRect(x, y, width, height);
+
+            ctx.font = '40px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'black';
+            ctx.strokeText(this.props.message, centre_x, centre_y);
+        }
+
         // if (!this.state.scan_lock) {
-            this.do_decode();
+        this.do_decode();
         // }
     },
 
@@ -227,7 +247,9 @@ var QRScanner = React.createClass({
                     <Screen
                         flip={this.props.flip}
                         log={this.props.log}
-                        onFrame={this.onFrame} />
+                        onFrame={this.onFrame}
+                        {...this.props}
+                        />
                 </div>
             </Row>
         );
@@ -272,50 +294,6 @@ var LogBox = React.createClass({
 })
 
 
-var DataBox = React.createClass({
-    propTypes: {
-        "color": React.PropTypes.string.isRequired,
-        "data": React.PropTypes.string.isRequired,
-        "clear": React.PropTypes.func.isRequired,
-        "checking": React.PropTypes.bool.isRequired,
-        "message": React.PropTypes.string.isRequired
-    },
-
-    render() {
-        if (this.props.checking) {
-            var checking_box = (<div>Checking...</div>);
-        } else if (!_.isEmpty(this.props.message)) {
-            var checking_box = (<div>{this.props.message}</div>);
-        }
-        return (
-            <Row>
-                <div className="panel" style={{overflow:"auto"}}>
-                    <div className="large-8 columns">
-                        <div className="match" style={{"backgroundColor": this.props.color}}>
-                            &nbsp;
-                        </div>
-                        &nbsp;&nbsp;
-                        <div style={{paddingLeft: "10px"}} className="left" id="data">{this.props.data}</div>
-                    </div>
-                    <div className="large-4 columns">
-                        <button
-                            onClick={this.props.clear}
-                            className="btn right"
-                            style={{margin:0}}>
-                                Clear
-                        </button>
-                    </div>
-                    <div>
-                        {checking_box}
-                    </div>
-                    <br/>
-                </div>
-            </Row>
-        );
-    }
-});
-
-
 var PasswordBox = React.createClass({
     propTypes: {
         "onSave": React.PropTypes.func.isRequired
@@ -349,13 +327,11 @@ var App = React.createClass({
 
     getInitialState() {
         return {
-            "color": "red",
-            "data": "",
             "scan_lock": false,
             "api": null,
             "camera": null,
             "scanner": null,
-            "checking": false,
+            "message_bg": '',
             "message": '',
             'flip': false,
             "password": localStorage.getItem("password")
@@ -373,14 +349,14 @@ var App = React.createClass({
         var msg = messageFromData(data)
         this.log(msg);
         this.setState({
-            "checking": false,
+            "message_bg": "green",
             "message": msg
         })
     },
 
     scanRequestFailure(data) {
         this.setState({
-            "checking": false,
+            "message_bg": "red",
             "message": "Couldn't reach server, try again"
         });
     },
@@ -394,10 +370,8 @@ var App = React.createClass({
 
     clear() {
         this.setState({
-            "checking": false,
             "scan_lock": false,
-            "color": "red",
-            "data": "",
+            "message_bg": '',
             "message": ''
         });
     },
@@ -407,15 +381,17 @@ var App = React.createClass({
         var match = QR_RE.exec(data)
 
         if (!match) {
-            this.setState({"data": data + " is invalid"});
+            this.setState({
+                "message": data + " is invalid",
+                "message_bg": "red"
+            });
             return;
         }
         if (this.state.scan_lock) return;
 
         this.setState({
-            "checking": true,
-            "data": match[3],
-            "color": "green",
+            "message_bg": "yellow",
+            "message": `Checking ${match[3]}`,
             "scan_lock": true
         });
 
@@ -485,13 +461,14 @@ var App = React.createClass({
 
         return (
             <div>
-                <QRScanner log={this.log} callback={this.data_callback} flip={this.state.flip} />
-                <DataBox
-                    color={this.state.color}
-                    data={this.state.data}
-                    clear={this.clear}
-                    checking={this.state.checking}
-                    message={this.state.message} />
+                <QRScanner
+                    log={this.log}
+                    callback={this.data_callback}
+                    flip={this.state.flip}
+                    onClick={this.clear}
+                    message={this.state.message}
+                    message_bg={this.state.message_bg}
+                    />
                 <LogBox log_messages={this.props.log_messages} />
                 <Options flip={this.flip} />
             </div>

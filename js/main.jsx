@@ -87,30 +87,30 @@ var QRScanner = React.createClass({
         "callback": React.PropTypes.func.isRequired
     },
 
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
             "callback": null,
             "log": null
         };
     },
 
-    getInitialState: function() {
+    getInitialState() {
         return {
             "video_el": null,
             "ctx": null
         };
     },
 
-    gum_success: function gum_success(stream) {
+    gum_success(stream) {
         this.props.log("Camera obtained and connected");
         this.state.video_el.src = window.URL.createObjectURL(stream)
     },
 
-    gum_failure: function gum_failure(error) {
+    gum_failure(error) {
         this.props.log("Unable to connect to camera");
     },
 
-    timerCallback: function timerCallback() {
+    timerCallback() {
         if (this.state.video_el.paused || this.state.video_el.ended) {
             return;
         }
@@ -125,7 +125,7 @@ var QRScanner = React.createClass({
         setTimeout(this.timerCallback, SCAN_INTERVAL);
     },
 
-    do_decode: function do_decode() {
+    do_decode() {
         try {
             this.qrcode_callback(qrcode.decode());
         } catch (e) {
@@ -139,7 +139,7 @@ var QRScanner = React.createClass({
         this.props.callback(data);
     }, 500),
 
-    play_callback: function play_callback() {
+    play_callback() {
         var interval_id = setInterval(
             function(){
                 var valid = (
@@ -162,7 +162,7 @@ var QRScanner = React.createClass({
         this.timerCallback();
     },
 
-    componentDidMount: function ready() {
+    componentDidMount() {
         'use strict';
         var video_el = document.getElementById("video"),
             c1 = document.getElementById("qr-canvas"),
@@ -184,7 +184,7 @@ var QRScanner = React.createClass({
         )
     },
 
-    render: function render() {
+    render() {
         return (
             <Row>
                 <div className="panel">
@@ -198,7 +198,7 @@ var QRScanner = React.createClass({
 
 
 var Row = React.createClass({
-    render: function() {
+    render() {
         return (
             <div className="row">
                 <div className="large-offset-3 large-6 small-12 columns">
@@ -215,7 +215,7 @@ var LogBox = React.createClass({
         "log_messages": log_messages_prop_type
     },
 
-    render: function() {
+    render() {
         return (
             <Row>
                 <div className="panel">
@@ -243,7 +243,7 @@ var DataBox = React.createClass({
         "message": React.PropTypes.string.isRequired
     },
 
-    render: function() {
+    render() {
         if (this.props.checking) {
             var checking_box = (<div>Checking...</div>);
         } else if (!_.isEmpty(this.props.message)) {
@@ -283,7 +283,7 @@ var PasswordBox = React.createClass({
         "onSave": React.PropTypes.func.isRequired
     },
 
-    render: function() {
+    render() {
         return (
             <Row>
                 <form className="panel" onSubmit={this.props.onSave} style={{"overflow": "auto"}}>
@@ -305,11 +305,11 @@ var App = React.createClass({
         "log_messages": log_messages_prop_type
     },
 
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {"log_messages": []};
     },
 
-    getInitialState: function() {
+    getInitialState() {
         return {
             "color": "red",
             "data": "",
@@ -324,13 +324,13 @@ var App = React.createClass({
         }
     },
 
-    log: function log(message) {
+    log(message) {
         var log_messages = this.props.log_messages;
         log_messages.unshift({"timestamp": new Date(), "message": message});
         this.setProps({"log_messages": log_messages});
     },
 
-    scanRequestSuccess: function scanRequestSuccess(data) {
+    scanRequestSuccess(data) {
         console.log(data);
         var msg = messageFromData(data)
         this.log(msg);
@@ -340,21 +340,21 @@ var App = React.createClass({
         })
     },
 
-    scanRequestFailure: function scanRequestFailure(data) {
+    scanRequestFailure(data) {
         this.setState({
             "checking": false,
             "message": "Couldn't reach server, try again"
         });
     },
 
-    api_caller: function api_caller(data) {
+    api_caller(data) {
         return this.state.api.scanRequest(data).then(
             this.scanRequestSuccess,
             this.scanRequestFailure
         );
     },
 
-    clear: function clear() {
+    clear() {
         this.setState({
             "checking": false,
             "scan_lock": false,
@@ -364,7 +364,7 @@ var App = React.createClass({
         });
     },
 
-    data_callback: function data_callback(data) {
+    data_callback(data) {
         'use strict';
         var match = QR_RE.exec(data)
 
@@ -384,7 +384,7 @@ var App = React.createClass({
         return this.api_caller(data);
     },
 
-    componentDidMount: function componentDidMount() {
+    componentDidMount() {
         this.setState({
             "api": new QrAPI(
                 DEBUG ?
@@ -396,29 +396,29 @@ var App = React.createClass({
         $(document.body).on('keydown.spacebar', this.handleKeyDown);
     },
 
-    componentWillUnMount: function componentWillUnMount() {
+    componentWillUnMount() {
         $(document.body).off('keydown.spacebar', this.handleKeyDown);
     },
 
-    handleKeyDown: function handleKeyDown(event) {
+    handleKeyDown(event) {
         if (event.keyCode == 32) {
             event.preventDefault();
             this.clear();
         }
     },
 
-    setFlip: function setFlip(val) {
+    setFlip(val) {
         this.setState({
             "flip": val
         });
     },
 
-    onSave: function onSave(event) {
+    onSave(event) {
         event.preventDefault();
         this.setState({"password": event.target.password.value})
     },
 
-    render_error: function render_error(error) {
+    render_error(error) {
         return (
             <Row>
                 <div className="panel">
@@ -428,7 +428,7 @@ var App = React.createClass({
         );
     },
 
-    render: function() {
+    render() {
         if (!_.isEmpty(this.state.password)) {
             if (this.state.api) {
                 this.state.api.setPassword(this.state.password);
@@ -466,7 +466,7 @@ var Options = React.createClass({
         'setFlip': React.PropTypes.func.isRequired
     },
 
-    logout: function() {
+    logout() {
         localStorage.removeItem("password");
         window.location = window.location; // reload
     },
@@ -475,7 +475,7 @@ var Options = React.createClass({
         self.props.setFlip(ev.target.value);
     },
 
-    render: function() {
+    render() {
         return (
             <Row>
                 <div className="panel" style={{height: "100px"}}>

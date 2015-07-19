@@ -1,16 +1,15 @@
-function QrAPI(apiUrl, apiPassword) {
-    this.apiUrl = apiUrl;
-    this.apiPassword = apiPassword;
-}
-QrAPI.prototype = {
-    setPassword: function setPassword(password) {
+class QrAPI {
+    constructor(apiUrl, apiPassword) {
+        this.apiUrl = apiUrl;
+        this.apiPassword = apiPassword;
+    }
+    setPassword(password) {
         this.apiPassword = password;
-    },
-    getHistory: function getHistory() {
+    }
+    getHistory() {
         return this.scanRequest("");
-    },
-
-    scanRequest: function scanRequest(barcode) {
+    }
+    scanRequest(barcode) {
         'use strict';
         return $.post(
             this.apiUrl,

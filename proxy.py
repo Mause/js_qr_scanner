@@ -11,7 +11,7 @@ import tornado.web
 import tornado.ioloop
 import tornado.options
 from webassets import Environment, Bundle
-from react import jsx
+from webassets.filter import Filter
 
 
 tornado.options.parse_command_line()
@@ -20,14 +20,22 @@ logging.basicConfig(level=logging.DEBUG)
 my_env = Environment('.', '.')
 
 
-def react_filter(_in, out, **kw):
-    out.write(jsx.transform_string(_in.read()))
+class ReactFilter(Filter):
+    name = 'react_filter'
+
+    def setup(self):
+        from react import jsx
+        self.transformer = jsx.JSXTransformer()
+
+    def input(self, _in, out, **kw):
+        out.write(self.transformer.transform_string(_in.read()))
 
 
 def build_bundle():
+    jsx = Bundle('js/main.jsx', filters=(ReactFilter))
     js = Bundle(
-        'js/api.js', 'js/camera.js', 'js/main.jsx',
-        filters=(react_filter, 'jsmin'),
+        'js/api.js', 'js/camera.js', jsx,
+        filters='jsmin',
         output='gen/packed.js'
     )
     my_env.register('js_all', js)

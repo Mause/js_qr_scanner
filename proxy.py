@@ -11,31 +11,27 @@ import tornado.web
 import tornado.ioloop
 import tornado.options
 from webassets import Environment, Bundle
-from webassets.filter import Filter
+from webassets.filter import register_filter
+from webassets_babel import BabelFilter
 
+register_filter(BabelFilter)
 
 tornado.options.parse_command_line()
 logging.basicConfig(level=logging.DEBUG)
 
 my_env = Environment('.', '.')
+my_env.debug = False
+
+my_env.config.setdefault(
+    'BABEL_BIN',
+    'C:\\Users\\Dominic\\AppData\\Roaming\\npm\\babel.cmd'
+)
 
 
-class ReactFilter(Filter):
-    name = 'react_filter'
-
-    def setup(self):
-        from react import jsx
-        self.transformer = jsx.JSXTransformer()
-
-    def input(self, _in, out, **kw):
-        out.write(self.transformer.transform_string(_in.read()))
-
-
-def build_bundle():
-    jsx = Bundle('js/main.jsx', filters=(ReactFilter))
+def build_bundles():
     js = Bundle(
-        'js/api.js', 'js/camera.js', jsx,
-        filters='jsmin',
+        'js/api.js', 'js/camera.js', 'js/main.jsx',
+        filters=('babel,jsmin'),
         output='gen/packed.js'
     )
     my_env.register('js_all', js)
@@ -77,7 +73,7 @@ application = tornado.web.Application([
 ], debug=True)
 
 if __name__ == '__main__':
-    build_bundle()
+    build_bundles()
     my_env['js_all'].urls()
     application.listen(os.environ.get("PORT", 8888), address='0.0.0.0')
     tornado.ioloop.IOLoop.instance().start()

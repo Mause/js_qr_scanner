@@ -1,4 +1,5 @@
 var DEBUG = location.search.indexOf('debug') != -1;
+var SCAN_INTERVAL = 125 / 2;
 
 var log_messages_prop_type = React.PropTypes.arrayOf(
     React.PropTypes.shape({
@@ -121,7 +122,7 @@ var QRScanner = React.createClass({
             this.do_decode();
         }
 
-        setTimeout(this.timerCallback, 125 / 2);
+        setTimeout(this.timerCallback, SCAN_INTERVAL);
     },
 
     do_decode: function do_decode() {

@@ -407,9 +407,9 @@ var App = React.createClass({
         }
     },
 
-    setFlip(val) {
+    flip(val) {
         this.setState({
-            "flip": val
+            "flip": !this.state.flip
         });
     },
 
@@ -447,7 +447,7 @@ var App = React.createClass({
 
         return (
             <div>
-                <QRScanner log={this.log} callback={this.data_callback} />
+                <QRScanner log={this.log} callback={this.data_callback} flip={this.state.flip} />
                 <DataBox
                     color={this.state.color}
                     data={this.state.data}
@@ -455,7 +455,7 @@ var App = React.createClass({
                     checking={this.state.checking}
                     message={this.state.message} />
                 <LogBox log_messages={this.props.log_messages} />
-                <Options setFlip={this.setFlip} />
+                <Options flip={this.flip} />
             </div>
         );
     }
@@ -463,16 +463,12 @@ var App = React.createClass({
 
 var Options = React.createClass({
     propTypes: {
-        'setFlip': React.PropTypes.func.isRequired
+        'flip': React.PropTypes.func.isRequired
     },
 
     logout() {
         localStorage.removeItem("password");
         window.location = window.location; // reload
-    },
-
-    flip: function(ev) {
-        self.props.setFlip(ev.target.value);
     },
 
     render() {
@@ -486,9 +482,12 @@ var Options = React.createClass({
                                 Logout
                         </button>
                     </div>
-                    <div className="large-2 columns">
-                        <input type="checkbox" onchange={this.flip} name="flip" />
-                        <label htmlFor="flip">Flip</label>
+                    <div className="large-4 columns">
+                        <button
+                            onClick={this.props.flip}
+                            className="btn">
+                                Flip
+                        </button>
                     </div>
                 </div>
             </Row>

@@ -31,11 +31,25 @@ my_env.config.setdefault(
 def build_bundles():
     js = Bundle(
         'js/api.js', 'js/camera.js', 'js/main.jsx',
-        filters=('babel,jsmin'),
+        filters=(
+            'babel',
+            # 'jsmin'
+        ),
         output='gen/packed.js'
     )
     my_env.register('js_all', js)
-    return js
+    deps = Bundle(
+        "js/vendor/jquery.dev.js",
+        "js/vendor/foundation.min.js",
+        "js/vendor/llqrcode.js",
+        "js/vendor/modernizr-latest.js",
+        "js/vendor/underscore.js",
+        "js/vendor/react/react-with-addons.js",
+        filters='jsmin',
+        output='gen/deps.js'
+    )
+    my_env.register('deps', deps)
+    return my_env
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -43,9 +57,13 @@ class MainHandler(tornado.web.RequestHandler):
         with open('index.html') as fh:
             data = fh.read()
         urls = my_env['js_all'].urls()
+        deps = my_env['deps'].urls()
 
         self.write(
-            jinja2.Template(data).render(urls=urls)
+            jinja2.Template(data).render(
+                urls=urls,
+                deps=deps
+            )
         )
 
 

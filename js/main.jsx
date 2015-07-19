@@ -319,6 +319,7 @@ var App = React.createClass({
             "scanner": null,
             "checking": false,
             "message": '',
+            'flip': false,
             "password": localStorage.getItem("password")
         }
     },
@@ -406,6 +407,12 @@ var App = React.createClass({
         }
     },
 
+    setFlip: function setFlip(val) {
+        this.setState({
+            "flip": val
+        });
+    },
+
     onSave: function onSave(event) {
         event.preventDefault();
         this.setState({"password": event.target.password.value})
@@ -448,27 +455,40 @@ var App = React.createClass({
                     checking={this.state.checking}
                     message={this.state.message} />
                 <LogBox log_messages={this.props.log_messages} />
-                <Logout />
+                <Options setFlip={this.setFlip} />
             </div>
         );
     }
 })
 
-var Logout = React.createClass({
+var Options = React.createClass({
+    propTypes: {
+        'setFlip': React.PropTypes.func.isRequired
+    },
+
     logout: function() {
         localStorage.removeItem("password");
         window.location = window.location; // reload
     },
+
+    flip: function(ev) {
+        self.props.setFlip(ev.target.value);
+    },
+
     render: function() {
         return (
             <Row>
                 <div className="panel" style={{height: "100px"}}>
-                    <div className="large-10 columns">
+                    <div className="large-4 columns">
                         <button
                             onClick={this.logout}
                             className="btn">
                                 Logout
                         </button>
+                    </div>
+                    <div className="large-2 columns">
+                        <input type="checkbox" onchange={this.flip} name="flip" />
+                        <label htmlFor="flip">Flip</label>
                     </div>
                 </div>
             </Row>

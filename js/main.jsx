@@ -36,7 +36,11 @@ function was_successful(data) {
 
 
 function messageFromData(data) {
-    var message = '';
+    var message = '',
+        user = render_user(data.user);
+    if (user.length !== 0) {
+        message = "<" + user + "> : " + message;
+    }
 
     if (data.status < 1) {
         if (data.error.length === 0) {
@@ -50,11 +54,6 @@ function messageFromData(data) {
 
     } else {
         message = "Sign-in successful";
-    }
-
-    var user = render_user(data.user);
-    if (user.length !== 0) {
-        message = "<" + user + "> : " + message;
     }
 
     return message;
@@ -74,13 +73,12 @@ function checkCompatibility() {
 
 
 function get_timestamp(d) {
-    function pad(str) { return ("0" + str).substr(-2); }
+    var pad = str => ("0" + str).substr(-2),
+        hours = pad(d.getHours()),
+        minutes = pad(d.getMinutes()),
+        seconds = pad(d.getSeconds());
 
-    return (
-        pad(d.getHours())   + ":" +
-        pad(d.getMinutes()) + ":" +
-        pad(d.getSeconds())
-    );
+    return `${hours}:${minutes}:${seconds}`;
 }
 
 
@@ -530,9 +528,8 @@ function run() {
 }
 
 if (DEBUG) {
-    try {
-        run();
-    } catch (e) {
+    try { run(); }
+    catch (e) {
         alert(e);
         throw e;
     }

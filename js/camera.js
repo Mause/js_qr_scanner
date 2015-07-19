@@ -1,6 +1,5 @@
 navigator.getUserMedia = Modernizr.prefixed("getUserMedia", navigator);
 
-
 function getSources() {
     var def = $.Deferred();
 
@@ -19,6 +18,8 @@ function getSourcesCallback(sources) {
         // if we found a forward facing camera, use that :D
         videos = env;
     }
+
+    if (videos.length === 0) return $.Deferred.reject(null);
 
     return getUserMedia(videos[0].id);
 }

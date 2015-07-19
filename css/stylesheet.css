@@ -6,11 +6,3 @@ canvas {
 video {
     display: none;
 }
-
-.match {
-    float: left;
-    width: 20px;
-    height: 20px;
-    border: 1px solid black;
-    background-color: red;
-}

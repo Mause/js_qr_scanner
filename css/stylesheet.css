@@ -6,3 +6,7 @@ canvas {
 video {
     display: none;
 }
+
+.log_message {
+    margin-bottom: 0;
+}

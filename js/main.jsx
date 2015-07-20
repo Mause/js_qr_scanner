@@ -237,7 +237,7 @@ var QRScanner = React.createClass({
             ctx.font = '40px sans-serif';
             ctx.textAlign = 'center';
             ctx.fillStyle = 'black';
-            ctx.strokeText(this.props.message, centre_x, centre_y);
+            ctx.fillText(this.props.message, centre_x, centre_y);
         }
 
         // if (!this.state.scan_lock) {

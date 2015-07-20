@@ -5,6 +5,7 @@ import os
 import json
 import base64
 import logging
+import platform
 from io import BytesIO
 from os.path import dirname
 
@@ -25,10 +26,12 @@ logging.basicConfig(level=logging.DEBUG)
 my_env = Environment('.', '.')
 my_env.debug = False
 
-my_env.config.setdefault(
-    'BABEL_BIN',
-    'C:\\Users\\Dominic\\AppData\\Roaming\\npm\\babel.cmd'
-)
+
+if platform.system() == 'Windows':
+    my_env.config.setdefault(
+        'BABEL_BIN',
+        'C:\\Users\\Dominic\\AppData\\Roaming\\npm\\babel.cmd'
+    )
 
 
 def build_bundles():

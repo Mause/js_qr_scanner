@@ -1,6 +1,7 @@
 var flag = name => location.search.indexOf(name) != -1;
 
 var DEBUG = flag('debug');
+var USE_MOCK = flag('use_mock');
 var SCAN_INTERVAL = 125 / 2;
 var QR_RE = /^([0-9]+)\$\$([a-z0-9]+)\$\$(.+)$/;
 
@@ -10,6 +11,32 @@ var log_messages_prop_type = React.PropTypes.arrayOf(
         "message": React.PropTypes.string
     })
 ).isRequired;
+
+
+
+var Mock = {
+    scanRequest(data) {
+        return $.getJSON('tests.json').then(
+            function(tests) {
+                if (!(data in tests)) {
+                    // may genuinely glitch out
+                    return {
+                        status: 0,
+                        error: "Invalid code, try again"
+                    }
+                }
+
+                var resp = tests[data]['response'];
+                return (
+                    resp === 'fail_request' ?
+                    $.Deferred().reject() :
+                    resp
+                );
+            },
+            () => console.error("Couldn't load tests")
+        )
+    }
+}
 
 
 
@@ -374,7 +401,10 @@ var App = React.createClass({
     },
 
     api_caller(data) {
-        return this.state.api.scanRequest(data).then(
+        var scanRequest;
+        scanRequest = USE_MOCK ? Mock.scanRequest : this.state.api.scanRequest;
+
+        return scanRequest(data).then(
             this.scanRequestSuccess,
             this.scanRequestFailure
         );

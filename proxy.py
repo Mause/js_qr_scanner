@@ -2,9 +2,13 @@
 A proxy whilst the api doesn't have the proper csrf headers
 """
 import os
+import json
+import base64
 import logging
+from io import BytesIO
 from os.path import dirname
 
+import qrcode
 import requests
 import tornado.web
 import tornado.ioloop
@@ -59,6 +63,32 @@ class MainHandler(tornado.web.RequestHandler):
         return self.render('index.html', urls=urls, deps=deps)
 
 
+def build_image(data):
+    img = qrcode.make(data)
+
+    fh = BytesIO()
+    img.save(fh)
+    b64 = base64.b64encode(fh.getvalue())
+
+    return b'data:image/png;base64,' + b64
+
+
+class TestsHandler(tornado.web.RequestHandler):
+    def get(self):
+        with open('tests.json') as fh:
+            tests = json.load(fh)
+
+        images = {
+            k: {
+                "desc": v['desc'],
+                "img": build_image(k).decode()
+            }
+            for k, v in tests.items()
+        }
+
+        return self.render('tests.html', tests=images)
+
+
 def do(func):
     def handler(self):
         r = func(
@@ -79,6 +109,7 @@ class Handler(tornado.web.RequestHandler):
 application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/ticket/signin", Handler),
+    (r"/tests", TestsHandler),
     (r"/(.*)", tornado.web.StaticFileHandler, {"path": dirname(__file__)})
 ], debug=True)
 

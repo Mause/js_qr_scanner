@@ -1,4 +1,6 @@
-var DEBUG = location.search.indexOf('debug') != -1;
+var flag = name => location.search.indexOf(name) != -1;
+
+var DEBUG = flag('debug');
 var SCAN_INTERVAL = 125 / 2;
 var QR_RE = /^([0-9]+)\$\$([a-z0-9]+)\$\$(.+)$/;
 

@@ -532,14 +532,14 @@ var Options = React.createClass({
         return (
             <Row>
                 <div className="panel" style={{height: "100px"}}>
-                    <div className="large-4 columns">
+                    <div className="small-2 columns">
                         <button
                             onClick={this.logout}
                             className="btn">
                                 Logout
                         </button>
                     </div>
-                    <div className="large-4 columns">
+                    <div className="small-2 columns">
                         <button
                             onClick={this.props.flip}
                             className="btn">

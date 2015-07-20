@@ -16,7 +16,7 @@ var log_messages_prop_type = React.PropTypes.arrayOf(
 
 var Mock = {
     scanRequest(data) {
-        return $.getJSON('tests.json').then(
+        return new Promise($.getJSON('tests.json')).then(
             function(tests) {
                 if (!(data in tests)) {
                     // may genuinely glitch out
@@ -29,7 +29,7 @@ var Mock = {
                 var resp = tests[data]['response'];
                 return (
                     resp === 'fail_request' ?
-                    $.Deferred().reject() :
+                    Promise.reject() :
                     resp
                 );
             },

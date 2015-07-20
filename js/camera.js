@@ -1,13 +1,11 @@
 navigator.getUserMedia = Modernizr.prefixed("getUserMedia", navigator);
 
+
 function getSources() {
-    var def = $.Deferred();
-
-    window.MediaStreamTrack.getSources(function(sources){
-        def.resolve(sources);
-    });
-
-    return def;
+    debugger;
+    return new Promise(function(resolve, reject) {
+        window.MediaStreamTrack.getSources(resolve);
+    })
 }
 
 
@@ -19,7 +17,7 @@ function getSourcesCallback(sources) {
         videos = env;
     }
 
-    if (videos.length === 0) return $.Deferred.reject(null);
+    if (videos.length === 0) return Promise.reject();
 
     return getUserMedia(videos[0].id);
 }
@@ -37,19 +35,17 @@ function getCamera() {
 
 
 function getUserMedia(id) {
-    var video = (
-        (id !== undefined) ?
-        {optional: [{sourceId: id}]} :
-        {}
-    )
+    return new Promise(function(resolve, reject) {
+        var video = (
+            (id !== undefined) ?
+            {optional: [{sourceId: id}]} :
+            {}
+        )
 
-    var def = $.Deferred();
-
-    navigator.getUserMedia(
-        {'video': video},
-        def.resolve,
-        def.reject
-    );
-
-    return def;
+        navigator.getUserMedia(
+            {'video': video},
+            resolve,
+            reject
+        );
+    });
 }

@@ -189,6 +189,8 @@ var Screen = React.createClass({
             "play", $.proxy(this.play_callback, this), false
         );
 
+        this.props.log('Waiting for camera...');
+
         return getCamera().then(
             this.gum_success,
             this.gum_failure

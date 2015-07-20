@@ -5,7 +5,6 @@ import os
 import logging
 from os.path import dirname
 
-import jinja2
 import requests
 import tornado.web
 import tornado.ioloop
@@ -54,17 +53,10 @@ def build_bundles():
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        with open('index.html') as fh:
-            data = fh.read()
         urls = my_env['js_all'].urls()
         deps = my_env['deps'].urls()
 
-        self.write(
-            jinja2.Template(data).render(
-                urls=urls,
-                deps=deps
-            )
-        )
+        return self.render('index.html', urls=urls, deps=deps)
 
 
 def do(func):

@@ -1,7 +1,6 @@
 webassets==0.10.1
 tornado==4.2
 PyReact==0.5.2
-jinja2==2.7.3
 requests==2.7.0
 jsmin==2.1.2
 webassets_babel==0.1.3

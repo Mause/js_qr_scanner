@@ -5,14 +5,6 @@ var USE_MOCK = flag('use_mock');
 var SCAN_INTERVAL = 125 / 2;
 var QR_RE = /^([0-9]+)\$\$([a-z0-9]+)\$\$(.+)$/;
 
-var log_messages_prop_type = React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-        "timestamp": React.PropTypes.date,
-        "message": React.PropTypes.string
-    })
-).isRequired;
-
-
 
 var Mock = {
     scanRequest(data) {
@@ -113,7 +105,6 @@ function get_timestamp(d) {
 
 var Screen = React.createClass({
     propTypes: {
-        "log": React.PropTypes.func.isRequired,
         "onFrame": React.PropTypes.func,
         "flip": React.PropTypes.bool,
         "onClick": React.PropTypes.func
@@ -136,12 +127,12 @@ var Screen = React.createClass({
 
     gum_success(stream) {
         this.increment("camera_stage");
-        this.props.log("Camera obtained and connected");
+        console.log("Camera obtained and connected");
         this.state.video_el.src = window.URL.createObjectURL(stream)
     },
 
     gum_failure(error) {
-        this.props.log("Unable to connect to camera");
+        alert("Unable to connect to camera");
     },
 
     play_callback() {
@@ -156,14 +147,14 @@ var Screen = React.createClass({
                     this.state.c1.width = this.state.video_el.videoWidth;
                     this.state.c1.height = this.state.video_el.videoHeight;
                     this.setState({"video_stage": this.state.video_stage + 1});
-                    this.props.log("Video obtained");
+                    console.log("Video obtained");
                     clearInterval(interval_id);
                 }
             }.bind(this),
             125
         );
 
-        this.props.log("Waiting for video...");
+        console.log("Waiting for video...");
         this.setState({"video_stage": this.state.video_stage + 1});
 
         this.timerCallback();
@@ -201,7 +192,7 @@ var Screen = React.createClass({
         );
 
         this.increment("camera_stage");
-        this.props.log('Waiting for camera...');
+        console.log('Waiting for camera...');
 
         return getCamera().then(
             this.gum_success,
@@ -287,14 +278,6 @@ var PasswordBox = React.createClass({
 
 
 var App = React.createClass({
-    propTypes: {
-        "log_messages": log_messages_prop_type
-    },
-
-    getDefaultProps() {
-        return {"log_messages": []};
-    },
-
     getInitialState() {
         return {
             "scan_lock": false,
@@ -308,16 +291,10 @@ var App = React.createClass({
         }
     },
 
-    log(message) {
-        var log_messages = this.props.log_messages;
-        log_messages.unshift({"timestamp": new Date(), "message": message});
-        this.setProps({"log_messages": log_messages});
-    },
-
     scanRequestSuccess(data) {
         console.log(data);
         var msg = messageFromData(data), color;
-        this.log(msg);
+        console.log(msg);
 
         color = was_successful(data) ? 'green' : 'red';
 
@@ -438,7 +415,6 @@ var App = React.createClass({
         return (
             <div>
                 <QRScanner
-                    log={this.log}
                     callback={this.data_callback}
                     flip={this.state.flip}
                     onClick={this.clear}

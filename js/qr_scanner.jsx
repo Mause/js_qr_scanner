@@ -1,17 +1,9 @@
 var QRScanner = React.createClass({
     propTypes: {
-        "log": React.PropTypes.func.isRequired,
         "callback": React.PropTypes.func.isRequired,
         "flip": React.PropTypes.bool.isRequired,
         "message": React.PropTypes.string.isRequired,
         "message_bg": React.PropTypes.string.isRequired,
-    },
-
-    getDefaultProps() {
-        return {
-            "callback": null,
-            "log": null
-        };
     },
 
     do_decode() {
@@ -54,7 +46,6 @@ var QRScanner = React.createClass({
                 <div className="panel">
                     <Screen
                         flip={this.props.flip}
-                        log={this.props.log}
                         onFrame={this.onFrame}
                         {...this.props}
                         />

@@ -16,9 +16,9 @@ var QRScanner = React.createClass({
         }
     },
 
-    qrcode_callback: _.debounce(function qrcode_callback(data) {
-        this.props.callback(data);
-    }, 500),
+    qrcode_callback(data) {
+        _.debounce(this.props.callback, 500))(data);
+    },
 
     onFrame(ctx) {
         var centre_x = ctx.canvas.width / 2,

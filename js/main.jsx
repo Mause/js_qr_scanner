@@ -31,7 +31,6 @@ var Mock = {
 }
 
 
-
 function render_user(user) {
     if (typeof user === "undefined") return "";
 
@@ -162,11 +161,10 @@ var App = React.createClass({
         return {
             "scan_lock": false,
             "api": null,
-            "camera": null,
             "scanner": null,
             "message_bg": '',
             "message": '',
-            'flip': false,
+            "flip": false,
             "password": localStorage.getItem("password")
         }
     },

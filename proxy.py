@@ -36,7 +36,10 @@ if platform.system() == 'Windows':
 
 def build_bundles():
     js = Bundle(
-        'js/api.js', 'js/camera.js', 'js/main.jsx',
+        'js/api.js',
+        'js/camera.js',
+        'js/qr_scanner.jsx',
+        'js/main.jsx',
         filters=(
             'babel',
             # 'jsmin'

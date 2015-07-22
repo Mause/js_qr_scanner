@@ -40,6 +40,7 @@ def build_bundles():
         'js/camera.js',
         'js/qr_scanner.jsx',
         'js/screen.jsx',
+        'js/options.js',
         'js/main.jsx',
         filters=(
             'babel',

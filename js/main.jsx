@@ -122,11 +122,20 @@ var Screen = React.createClass({
     getInitialState() {
         return {
             "video_el": null,
-            "ctx": null
+            "ctx": null,
+            "camera_stage": 0,
+            "video_stage": 0
         };
     },
 
+    increment(name) {
+        var obj = {}
+        obj[name] = this.state[name] + 1
+        this.setState(obj);
+    },
+
     gum_success(stream) {
+        this.increment("camera_stage");
         this.props.log("Camera obtained and connected");
         this.state.video_el.src = window.URL.createObjectURL(stream)
     },
@@ -146,6 +155,7 @@ var Screen = React.createClass({
                 if (valid) {
                     this.state.c1.width = this.state.video_el.videoWidth;
                     this.state.c1.height = this.state.video_el.videoHeight;
+                    this.setState({"video_stage": this.state.video_stage + 1});
                     this.props.log("Video obtained");
                     clearInterval(interval_id);
                 }
@@ -154,6 +164,7 @@ var Screen = React.createClass({
         );
 
         this.props.log("Waiting for video...");
+        this.setState({"video_stage": this.state.video_stage + 1});
 
         this.timerCallback();
     },
@@ -189,6 +200,7 @@ var Screen = React.createClass({
             "play", $.proxy(this.play_callback, this), false
         );
 
+        this.increment("camera_stage");
         this.props.log('Waiting for camera...');
 
         return getCamera().then(
@@ -210,10 +222,33 @@ var Screen = React.createClass({
             <div>
                 <canvas id="qr-canvas" onClick={this.props.onClick} style={this.props.flip ? this.flipStyle : {}}></canvas>
                 <video autoPlay={true} id="video"></video>
+                <div>
+                    <div style={{float: 'left'}}>camera: </div><StatusCube status={this.state.camera_stage}/>
+                    <div style={{float: 'left'}}>video: </div><StatusCube status={this.state.video_stage}/>
+                    <br/>
+                </div>
             </div>
         );
     }
 });
+
+var StatusCube = React.createClass({
+    propTypes: {
+        "status": React.PropTypes.number.isRequired
+    },
+    render() {
+        var color = ["red", "orange", "green"][this.props.status];
+        var style = {
+            "width": "25px",
+            "height": "25px",
+            "float": 'left',
+            "backgroundColor": color
+        };
+        return (
+            <div style={style}></div>
+        );
+    }
+})
 
 
 var QRScanner = React.createClass({
@@ -302,32 +337,6 @@ var Row = React.createClass({
         );
     }
 });
-
-
-var LogBox = React.createClass({
-    propTypes: {
-        "log_messages": log_messages_prop_type
-    },
-
-    render() {
-        return (
-            <Row>
-                <div className="panel">
-                    {this.props.log_messages.map(function(log, idx) {
-                        return (
-                            <div key={idx}>
-                                <p className="log_message">
-                                    {get_timestamp(log.timestamp) + " " + log.message}
-                                </p>
-                            </div>
-                        );
-                    })}
-                    <br/>
-                </div>
-            </Row>
-        );
-    }
-})
 
 
 var PasswordBox = React.createClass({
@@ -515,7 +524,6 @@ var App = React.createClass({
                     message={this.state.message}
                     message_bg={this.state.message_bg}
                     />
-                <LogBox log_messages={this.props.log_messages} />
                 <Options flip={this.flip} />
             </div>
         );

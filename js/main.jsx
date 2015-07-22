@@ -319,11 +319,7 @@ var App = React.createClass({
         var msg = messageFromData(data), color;
         this.log(msg);
 
-        if (was_successful(data)) {
-            color = 'green';
-        } else {
-            color = 'red';
-        }
+        color = was_successful(data) ? 'green' : 'red';
 
         this.setState({
             "message_bg": color,

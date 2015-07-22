@@ -7,10 +7,6 @@ var QRScanner = React.createClass({
         "message_bg": React.PropTypes.string.isRequired,
     },
 
-    getInitialState() {
-        return {"scan_lock": false};
-    },
-
     getDefaultProps() {
         return {
             "callback": null,
@@ -50,10 +46,6 @@ var QRScanner = React.createClass({
             ctx.fillStyle = 'black';
             ctx.fillText(this.props.message, centre_x, centre_y);
         }
-
-        // if (!this.state.scan_lock) {
-        this.do_decode();
-        // }
     },
 
     render() {

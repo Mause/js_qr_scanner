@@ -2,7 +2,6 @@ navigator.getUserMedia = Modernizr.prefixed("getUserMedia", navigator);
 
 
 function getSources() {
-    debugger;
     return new Promise(function(resolve, reject) {
         window.MediaStreamTrack.getSources(resolve);
     })
@@ -24,7 +23,7 @@ function getSourcesCallback(sources) {
 
 
 function getCamera() {
-    if (typeof MediaStreamTrack !== "undefined") {
+    if (MediaStreamTrack && MediaStreamTrack.getSources) {
         // if we can pick and choose which input we use
         return getSources().then(getSourcesCallback);
     } else {

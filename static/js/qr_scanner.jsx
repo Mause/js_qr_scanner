@@ -47,7 +47,6 @@ var QRScanner = React.createClass({
                     <Screen
                         flip={this.props.flip}
                         onFrame={this.onFrame}
-                        {...this.props}
                         />
                 </div>
             </Row>

@@ -107,13 +107,22 @@ var Screen = React.createClass({
     },
 
     render() {
+        var statuses = ['camera', 'video']
+        statuses = statuses.map((name) => {
+            <div style={{float: 'left'}}>{name}: </div>
+            <StatusCube status={this.state[name + '_stage']}/>
+        });
+
         return (
             <div>
-                <canvas id="qr-canvas" onClick={this.props.onClick} style={this.props.flip ? this.flipStyle : {}}></canvas>
+                <canvas
+                    id="qr-canvas"
+                    onClick={this.props.onClick}
+                    style={this.props.flip ? this.flipStyle : {}}>
+                </canvas>
                 <video src={this.state.src} autoPlay={true} id="video"></video>
                 <div>
-                    <div style={{float: 'left'}}>camera: </div><StatusCube status={this.state.camera_stage}/>
-                    <div style={{float: 'left'}}>video: </div><StatusCube status={this.state.video_stage}/>
+                    {statuses}
                     <br/>
                 </div>
             </div>

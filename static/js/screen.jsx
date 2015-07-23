@@ -8,6 +8,7 @@ var Screen = React.createClass({
     getInitialState() {
         return {
             "video_el": null,
+            "src": null,
             "ctx": null,
             "camera_stage": 0,
             "video_stage": 0
@@ -23,7 +24,9 @@ var Screen = React.createClass({
     gum_success(stream) {
         this.increment("camera_stage");
         console.log("Camera obtained and connected");
-        this.state.video_el.src = window.URL.createObjectURL(stream)
+        this.setState({
+            "src": window.URL.createObjectURL(stream)
+        });
     },
 
     gum_failure(error) {
@@ -107,7 +110,7 @@ var Screen = React.createClass({
         return (
             <div>
                 <canvas id="qr-canvas" onClick={this.props.onClick} style={this.props.flip ? this.flipStyle : {}}></canvas>
-                <video autoPlay={true} id="video"></video>
+                <video src={this.state.src} autoPlay={true} id="video"></video>
                 <div>
                     <div style={{float: 'left'}}>camera: </div><StatusCube status={this.state.camera_stage}/>
                     <div style={{float: 'left'}}>video: </div><StatusCube status={this.state.video_stage}/>

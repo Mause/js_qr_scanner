@@ -7,7 +7,6 @@ import base64
 import logging
 import platform
 from io import BytesIO
-from os.path import dirname
 
 import qrcode
 import requests
@@ -36,28 +35,28 @@ if platform.system() == 'Windows':
 
 def build_bundles():
     js = Bundle(
-        'js/api.js',
-        'js/camera.js',
-        'js/qr_scanner.jsx',
-        'js/screen.jsx',
-        'js/options.js',
-        'js/main.jsx',
+        'static/js/api.js',
+        'static/js/camera.js',
+        'static/js/qr_scanner.jsx',
+        'static/js/screen.jsx',
+        'static/js/options.jsx',
+        'static/js/main.jsx',
         filters=(
             'babel',
             # 'jsmin'
         ),
-        output='gen/packed.js'
+        output='static/gen/packed.js'
     )
     my_env.register('js_all', js)
     deps = Bundle(
-        "js/vendor/jquery.dev.js",
-        "js/vendor/foundation.min.js",
-        "js/vendor/llqrcode.js",
-        "js/vendor/modernizr-latest.js",
-        "js/vendor/underscore.js",
-        "js/vendor/react/react-with-addons.js",
+        "static/js/vendor/jquery.dev.js",
+        "static/js/vendor/foundation.min.js",
+        "static/js/vendor/llqrcode.js",
+        "static/js/vendor/modernizr-latest.js",
+        "static/js/vendor/underscore.js",
+        "static/js/vendor/react/react-with-addons.js",
         filters='jsmin',
-        output='gen/deps.js'
+        output='static/gen/deps.js'
     )
     my_env.register('deps', deps)
     return my_env
@@ -114,12 +113,18 @@ class Handler(tornado.web.RequestHandler):
     get = do(requests.get)
     post = do(requests.post)
 
+settings = {
+    'debug': True,
+    'static_path': 'static',
+    'template_path': 'templates',
+}
+
 application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/ticket/signin", Handler),
     (r"/tests", TestsHandler),
-    (r"/(.*)", tornado.web.StaticFileHandler, {"path": dirname(__file__)})
-], debug=True)
+    # (r"/(.*)", tornado.web.StaticFileHandler, {"path": dirname(__file__)})
+], **settings)
 
 if __name__ == '__main__':
     build_bundles()

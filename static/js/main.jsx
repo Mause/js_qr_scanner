@@ -156,6 +156,19 @@ var PasswordBox = React.createClass({
 });
 
 
+var ErrorBox = React.createClass({
+    render() {
+        return (
+            <Row>
+                <div className="panel">
+                    {this.props.error}
+                </div>
+            </Row>
+        );
+    }
+})
+
+
 var App = React.createClass({
     getInitialState() {
         return {
@@ -263,15 +276,6 @@ var App = React.createClass({
         this.setState({"password": event.target.password.value})
     },
 
-    render_error(error) {
-        return (
-            <Row>
-                <div className="panel">
-                    {error}
-                </div>
-            </Row>
-        );
-    },
 
     render() {
         if (!_.isEmpty(this.state.password)) {
@@ -283,7 +287,7 @@ var App = React.createClass({
 
         var error = checkCompatibility();
         if (error !== null) {
-            return this.render_error(error);
+            return <ErrorBox error={error}/>;
         }
 
         if (this.state.password === null) {

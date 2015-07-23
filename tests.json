@@ -1,0 +1,30 @@
+{
+  "10168$$c69c$$Unknown": {
+    "desc": "All good",
+    "response": {
+      "paid": 1,
+      "status": 1
+    }
+  },
+  "10169$$c69c$$Unknown": {
+    "desc": "Found, unpaid",
+    "response": {
+      "paid": 0,
+      "status": 1
+    }
+  },
+  "111111$$c69c$$Unknown": {
+    "desc": "Failed server request",
+    "response": "fail_request"
+  },
+  "frogs": {
+    "desc": "Invalid code by regex"
+  },
+  "101011$$c69c$$Unknown": {
+    "desc": "Not in database",
+    "response": {
+      "status": 0,
+      "error": "Ticket not found"
+    }
+  }
+}

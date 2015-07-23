@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div id="box">
+        {% set first = list(tests.items())[0] %}
+        <div>
+            <img id="img" width="300" height="300" src="{{first[1]['img']}}"/>
+            <p>
+                <span id="name">{{first[0]}}</span> -
+                <span id="desc">{{first[1]['desc']}}</span>
+            </p>
+        </div>
+    </div>
+
+    <select id="image_sel" onchange="javascript:reselect()">
+        {% for name, data in tests.items() %}
+            <option value="{{name}}">{{data['desc']}}</option>
+        {% end %}
+    </select>
+
+    <script>
+        var tests = {% raw json_encode(tests) %},
+            div = document.getElementById('box'),
+            sel = document.getElementById('image_sel'),
+            get = function(name) {return div.querySelector('#' + name)};
+
+        function reselect(ev) {
+            debugger;
+            var key = sel.value,
+                data = tests[key];
+            get('name').innerText = key;
+            get('desc').innerText = data.desc;
+            get('img').src = data.img;
+        }
+    </script>
+</body>
+</html>
+

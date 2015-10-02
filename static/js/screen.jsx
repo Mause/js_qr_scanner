@@ -109,8 +109,10 @@ var Screen = React.createClass({
     render() {
         var statuses = ['camera', 'video']
         statuses = statuses.map((name) => {
-            <div style={{float: 'left'}}>{name}: </div>
-            <StatusCube status={this.state[name + '_stage']}/>
+            <span>
+                <div style={{float: 'left'}}>{name}: </div>
+                <StatusCube status={this.state[name + '_stage']}/>
+            </span>
         });
 
         return (

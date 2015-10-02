@@ -4,6 +4,7 @@ var QRScanner = React.createClass({
         "flip": React.PropTypes.bool.isRequired,
         "message": React.PropTypes.string.isRequired,
         "message_bg": React.PropTypes.string.isRequired,
+        "source_id": React.PropTypes.string.isRequired
     },
 
     do_decode() {
@@ -46,6 +47,7 @@ var QRScanner = React.createClass({
                 <div className="panel">
                     <Screen
                         flip={this.props.flip}
+                        source_id={this.props.source_id}
                         onFrame={this.onFrame}
                         />
                 </div>

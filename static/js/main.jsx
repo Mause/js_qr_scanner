@@ -178,6 +178,7 @@ var App = React.createClass({
             "message_bg": '',
             "message": '',
             "flip": false,
+            "source_id": null,
             "password": localStorage.getItem("password")
         }
     },
@@ -276,6 +277,9 @@ var App = React.createClass({
         this.setState({"password": event.target.password.value})
     },
 
+    select_source(id) {
+        this.setState({source_id: id});
+    },
 
     render() {
         if (!_.isEmpty(this.state.password)) {
@@ -299,11 +303,12 @@ var App = React.createClass({
                 <QRScanner
                     callback={this.data_callback}
                     flip={this.state.flip}
+                    source_id={this.state.source_id}
                     onClick={this.clear}
                     message={this.state.message}
                     message_bg={this.state.message_bg}
                     />
-                <Options flip={this.flip} />
+                <Options flip={this.flip} select_source={this.select_source} />
             </div>
         );
     }

@@ -22,7 +22,7 @@ register_filter(BabelFilter)
 tornado.options.parse_command_line()
 logging.basicConfig(level=logging.DEBUG)
 
-my_env = Environment('.', '.')
+my_env = Environment(directory='static/', url='static/')
 my_env.debug = False
 
 
@@ -35,28 +35,28 @@ if platform.system() == 'Windows':
 
 def build_bundles():
     js = Bundle(
-        'static/js/api.js',
-        'static/js/camera.js',
-        'static/js/qr_scanner.jsx',
-        'static/js/screen.jsx',
-        'static/js/options.jsx',
-        'static/js/main.jsx',
+        'js/api.js',
+        'js/camera.js',
+        'js/qr_scanner.jsx',
+        'js/screen.jsx',
+        'js/options.jsx',
+        'js/main.jsx',
         filters=(
             'babel',
             # 'jsmin'
         ),
-        output='static/gen/packed.js'
+        output='gen/packed.js'
     )
     my_env.register('js_all', js)
     deps = Bundle(
-        "static/js/vendor/jquery.dev.js",
-        "static/js/vendor/foundation.min.js",
-        "static/js/vendor/llqrcode.js",
-        "static/js/vendor/modernizr-latest.js",
-        "static/js/vendor/underscore.js",
-        "static/js/vendor/react/react-with-addons.js",
+        "js/vendor/jquery.dev.js",
+        "js/vendor/foundation.min.js",
+        "js/vendor/llqrcode.js",
+        "js/vendor/modernizr-latest.js",
+        "js/vendor/underscore.js",
+        "js/vendor/react/react-with-addons.js",
         filters='jsmin',
-        output='static/gen/deps.js'
+        output='gen/deps.js'
     )
     my_env.register('deps', deps)
     return my_env

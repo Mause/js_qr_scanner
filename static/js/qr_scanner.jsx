@@ -39,6 +39,8 @@ var QRScanner = React.createClass({
             ctx.fillStyle = 'black';
             ctx.fillText(this.props.message, centre_x, centre_y);
         }
+
+        this.do_decode();
     },
 
     render() {

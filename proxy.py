@@ -82,7 +82,7 @@ def build_image(data):
 
 class TestsHandler(tornado.web.RequestHandler):
     def get(self):
-        with open('tests.json') as fh:
+        with open('static/tests.json') as fh:
             tests = json.load(fh)
 
         images = {

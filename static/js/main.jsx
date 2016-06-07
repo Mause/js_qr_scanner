@@ -90,7 +90,7 @@ function checkCompatibility() {
     } else if (window.location.hostname == 'localhost') {
         return null;
 
-    } else if (window.location.protocol != 'http') {
+    } else if (window.location.protocol != 'https:') {
         return "Must be accessed over https";
     }
 

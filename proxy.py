@@ -30,11 +30,16 @@ my_env.debug = False
 if platform.system() == 'Windows':
     npm = expandvars('%AppData%/npm')
     my_env.config.setdefault('BABEL_BIN', join(npm, 'babel.cmd'))
-    REACT_PRESET_PATH = join(npm, "node_modules/RedQR/")
+    PRESET_PATH = join(npm, "node_modules/RedQR/")
 else:
-    REACT_PRESET_PATH = "/app/"
-REACT_PRESET_PATH = join(REACT_PRESET_PATH, "node_modules/babel-preset-react")
-assert exists(REACT_PRESET_PATH)
+    PRESET_PATH = "/app/"
+PRESET_PATH = join(PRESET_PATH, "node_modules")
+assert exists(PRESET_PATH)
+PRESETS = ['react', 'es2015']
+PRESETS = ','.join(
+    join(PRESET_PATH, 'babel-preset-{}'.format(name))
+    for name in PRESETS
+)
 
 
 @register_filter
@@ -42,7 +47,7 @@ class BetterBabelFilter(BabelFilter):
     def get_executable_list(self, input_filename, output_filename):
         return (
             super().get_executable_list(input_filename, output_filename) +
-            ['--presets', REACT_PRESET_PATH]
+            ['--presets', PRESETS]
         )
 
 

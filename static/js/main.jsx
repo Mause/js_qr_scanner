@@ -249,12 +249,16 @@ var App = React.createClass({
         return this.api_caller(data);
     },
 
+    get_api_url() {
+        return window.location.protocol + "//events.rflan.org/ticket/signin";
+    },
+
     componentDidMount() {
         this.setState({
             "api": new QrAPI(
                 DEBUG ?
                 "/ticket/signin" :
-                "://events.rflan.org/ticket/signin",
+                this.get_api_url(),
                 null
             )
         });

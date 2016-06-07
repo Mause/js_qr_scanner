@@ -8,7 +8,7 @@ var QR_RE = /^([0-9]+)\$\$([a-z0-9]+)\$\$(.+)$/;
 
 var Mock = {
     scanRequest(data) {
-        return new Promise($.getJSON('tests.json')).then(
+        return Promise.resolve($.getJSON(tests_json)).then(
             function(tests) {
                 if (!(data in tests)) {
                     // may genuinely glitch out

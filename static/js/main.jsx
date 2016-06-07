@@ -211,7 +211,7 @@ var App = React.createClass({
 
     api_caller(data) {
         var scanRequest;
-        scanRequest = USE_MOCK ? Mock.scanRequest : this.state.api.scanRequest;
+        scanRequest = USE_MOCK ? Mock.scanRequest : this.state.api.scanRequest.bind(this.state.api);
 
         return scanRequest(data).then(
             this.scanRequestSuccess,

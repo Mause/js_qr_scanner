@@ -25,8 +25,13 @@
 
     <script>
       if (location.search.indexOf("DEBUG") != -1) {
-        window.onerror = function(e) {
-          alert(e);
+        alert("Debug on");
+        window.onerror = function(message, source, lineno, colno, error) {
+            alert(message);
+            alert(source);
+            alert(lineno);
+            alert(colno);
+            alert(error);
         }
       }
     </script>

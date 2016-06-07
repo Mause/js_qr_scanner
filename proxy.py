@@ -6,7 +6,9 @@ import json
 import base64
 import logging
 import platform
+import subprocess
 from io import BytesIO
+from os.path import join, exists
 
 import qrcode
 import requests
@@ -14,10 +16,10 @@ import tornado.web
 import tornado.ioloop
 import tornado.options
 from webassets import Environment, Bundle
+from webassets.exceptions import FilterError
 from webassets.filter import register_filter
 from webassets_babel import BabelFilter
 
-register_filter(BabelFilter)
 
 tornado.options.parse_command_line()
 logging.basicConfig(level=logging.DEBUG)
@@ -31,6 +33,35 @@ if platform.system() == 'Windows':
         'BABEL_BIN',
         'C:\\Users\\Dominic\\AppData\\Roaming\\npm\\babel.cmd'
     )
+
+REACT_PRESET_PATHS = [
+    "C:/Users/Dominic/AppData/Roaming/npm/node_modules/RedQR/",
+]
+for cmd in ['npm root', 'npm.cmd root']:
+    try:
+        REACT_PRESET_PATHS.append(subprocess.getoutput(cmd))
+    except Exception:
+        pass
+
+
+def react_preset_path():
+    for path in REACT_PRESET_PATHS:
+        cur = join(path, "node_modules/babel-preset-react")
+        if exists(cur):
+            return cur
+    else:
+        raise Exception
+
+
+@register_filter
+class BetterBabelFilter(BabelFilter):
+    def get_executable_list(self, input_filename, output_filename):
+        exe_list = super().get_executable_list(input_filename, output_filename)
+
+        exe_list.extend(('--presets', react_preset_path()))
+
+        print(' '.join(exe_list))
+        return exe_list
 
 
 def build_bundles():

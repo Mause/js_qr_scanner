@@ -11,7 +11,7 @@ class QrAPI {
     }
     scanRequest(barcode) {
         'use strict';
-        return new Promise($.post(
+        return Promise.resolve($.post(
             this.apiUrl,
             {
                 "qrcode": barcode,

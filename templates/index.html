@@ -23,6 +23,14 @@
 
     <div id="app"></div>
 
+    <script>
+      if (location.search.indexOf("DEBUG") != -1) {
+        window.onerror = function(e) {
+          alert(e);
+        }
+      }
+    </script>
+
     {% for url in (deps + urls) %}
       <script src="{{ url }}"></script>
     {% end %}

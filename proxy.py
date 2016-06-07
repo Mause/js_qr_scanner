@@ -34,29 +34,23 @@ if platform.system() == 'Windows':
     )
 
 REACT_PRESET_PATHS = [
-    "C:/Users/Dominic/AppData/Roaming/npm/node_modules/RedQR/",
-    "/app/"
+    join(path, "node_modules/babel-preset-react")
+    for path in [
+        "C:/Users/Dominic/AppData/Roaming/npm/node_modules/RedQR/",
+        "/app/"
+    ]
 ]
-
-
-def react_preset_path():
-    for path in REACT_PRESET_PATHS:
-        cur = join(path, "node_modules/babel-preset-react")
-        if exists(cur):
-            return cur
-    else:
-        raise Exception
+REACT_PRESET_PATHS = list(filter(exists, REACT_PRESET_PATHS))
+assert REACT_PRESET_PATHS
 
 
 @register_filter
 class BetterBabelFilter(BabelFilter):
     def get_executable_list(self, input_filename, output_filename):
-        exe_list = super().get_executable_list(input_filename, output_filename)
-
-        exe_list.extend(('--presets', react_preset_path()))
-
-        print(' '.join(exe_list))
-        return exe_list
+        return (
+            super().get_executable_list(input_filename, output_filename) +
+            [('--presets', next(REACT_PRESET_PATHS))]
+        )
 
 
 def build_bundles():

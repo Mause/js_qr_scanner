@@ -254,7 +254,7 @@ var App = React.createClass({
             "api": new QrAPI(
                 DEBUG ?
                 "/ticket/signin" :
-                "http://events.rflan.org/ticket/signin",
+                "://events.rflan.org/ticket/signin",
                 null
             )
         });

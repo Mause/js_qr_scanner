@@ -23,7 +23,9 @@
 
     <div id="app"></div>
 
-
+    <script type="text/javascript">
+      var tests_json = "{{ static_url('tests.json') }}";
+    </script>
     {% for url in (deps + urls) %}
       <script src="{{ url }}"></script>
     {% end %}

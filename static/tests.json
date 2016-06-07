@@ -3,7 +3,11 @@
     "desc": "All good",
     "response": {
       "paid": 1,
-      "status": 1
+      "status": 1,
+      "user": {
+        "firstName": "First name",
+        "lastName": "Last name"
+      }
     }
   },
   "10169$$c69c$$Unknown": {

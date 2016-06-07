@@ -7,7 +7,7 @@ import base64
 import logging
 import platform
 from io import BytesIO
-from os.path import join, exists
+from os.path import join, exists, expandvars
 
 import qrcode
 import requests
@@ -28,20 +28,13 @@ my_env.debug = False
 
 
 if platform.system() == 'Windows':
-    my_env.config.setdefault(
-        'BABEL_BIN',
-        'C:\\Users\\Dominic\\AppData\\Roaming\\npm\\babel.cmd'
-    )
-
-REACT_PRESET_PATHS = [
-    join(path, "node_modules/babel-preset-react")
-    for path in [
-        "C:/Users/Dominic/AppData/Roaming/npm/node_modules/RedQR/",
-        "/app/"
-    ]
-]
-REACT_PRESET_PATHS = list(filter(exists, REACT_PRESET_PATHS))
-assert REACT_PRESET_PATHS
+    npm = expandvars('%AppData%/npm')
+    my_env.config.setdefault('BABEL_BIN', join(npm, 'babel.cmd'))
+    REACT_PRESET_PATH = join(npm, "node_modules/RedQR/")
+else:
+    REACT_PRESET_PATH = "/app/"
+REACT_PRESET_PATH = join(REACT_PRESET_PATH, "node_modules/babel-preset-react")
+assert exists(REACT_PRESET_PATH)
 
 
 @register_filter
@@ -49,7 +42,7 @@ class BetterBabelFilter(BabelFilter):
     def get_executable_list(self, input_filename, output_filename):
         return (
             super().get_executable_list(input_filename, output_filename) +
-            [('--presets', next(REACT_PRESET_PATHS))]
+            [('--presets', REACT_PRESET_PATH)]
         )
 
 

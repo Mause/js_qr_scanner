@@ -322,7 +322,7 @@ var App = React.createClass({
 
 
 function run() {
-    React.render(
+    ReactDOM.render(
         <App/>,
         document.getElementById('app')
     );

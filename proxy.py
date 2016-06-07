@@ -68,6 +68,7 @@ def build_bundles():
         "js/vendor/modernizr-latest.js",
         "js/vendor/underscore.js",
         "js/vendor/react/react-with-addons.js",
+        "js/vendor/react/react-dom.js",
         filters='jsmin',
         output='gen/deps.js'
     )

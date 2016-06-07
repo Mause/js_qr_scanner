@@ -6,7 +6,6 @@ import json
 import base64
 import logging
 import platform
-import subprocess
 from io import BytesIO
 from os.path import join, exists
 
@@ -36,12 +35,8 @@ if platform.system() == 'Windows':
 
 REACT_PRESET_PATHS = [
     "C:/Users/Dominic/AppData/Roaming/npm/node_modules/RedQR/",
+    "/app/"
 ]
-for cmd in ['npm root', 'npm.cmd root']:
-    try:
-        REACT_PRESET_PATHS.append(subprocess.getoutput(cmd))
-    except Exception:
-        pass
 
 
 def react_preset_path():

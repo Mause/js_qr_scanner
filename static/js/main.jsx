@@ -86,6 +86,12 @@ function checkCompatibility() {
 
     } else if (!Modernizr.localstorage) {
         return "No localStorage support";
+
+    } else if (window.location.hostname == 'localhost') {
+        return null;
+
+    } else if (window.location.protocol != 'http') {
+        return "Must be accessed over https";
     }
 
     return null;

@@ -20986,7 +20986,9 @@ module.exports = emptyFunction;
 var emptyObject = {};
 
 if ("development" !== 'production') {
-  Object.freeze(emptyObject);
+  if (Object.freeze) {
+    Object.freeze(emptyObject);
+  }
 }
 
 module.exports = emptyObject;

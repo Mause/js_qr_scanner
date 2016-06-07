@@ -42,7 +42,7 @@ class BetterBabelFilter(BabelFilter):
     def get_executable_list(self, input_filename, output_filename):
         return (
             super().get_executable_list(input_filename, output_filename) +
-            [('--presets', REACT_PRESET_PATH)]
+            ['--presets', REACT_PRESET_PATH]
         )
 
 

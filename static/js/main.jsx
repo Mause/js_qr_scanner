@@ -91,7 +91,7 @@ function checkCompatibility() {
         return null;
 
     } else if (window.location.protocol != 'https:') {
-        return "Must be accessed over https";
+        return (<span>Must be accessed <a href="https://redqr.rflan.org">over https</a></span>);
     }
 
     return null;

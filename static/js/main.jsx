@@ -99,7 +99,7 @@ function checkCompatibility() {
 
 
 function get_timestamp(d) {
-    var pad = str => ("0" + str).substr(-2),
+    var pad = str => `0${str}`.substr(-2),
         hours = pad(d.getHours()),
         minutes = pad(d.getMinutes()),
         seconds = pad(d.getSeconds());

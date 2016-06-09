@@ -64,16 +64,16 @@ function messageFromData(data) {
 
     if (data.status < 1) {
         if (data.error.length === 0) {
-            message = "Unknown error occured";
+            message += "Unknown error occured";
         } else {
-            message = data.error;
+            message += data.error;
         }
 
     } else if (data.paid < 1){
-        message =  "Hasn't paid!";
+        message +=  "Hasn't paid!";
 
     } else {
-        message = "Sign-in successful";
+        message += "Sign-in successful";
     }
 
     return message;

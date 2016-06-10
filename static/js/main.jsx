@@ -59,7 +59,7 @@ function messageFromData(data) {
     var message = '',
         user = render_user(data.user);
     if (user.length !== 0) {
-        message = "<" + user + "> : " + message;
+        message = `<{$user}> : ${message}`;
     }
 
     if (data.status < 1) {
@@ -233,7 +233,7 @@ var App = React.createClass({
 
         if (!match) {
             this.setState({
-                "message": data + " is invalid",
+                "message": `${data} is invalid`
                 "message_bg": "red"
             });
             return;

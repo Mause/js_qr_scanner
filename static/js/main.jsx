@@ -233,7 +233,7 @@ var App = React.createClass({
 
         if (!match) {
             this.setState({
-                "message": `${data} is invalid`
+                "message": `${data} is invalid`,
                 "message_bg": "red"
             });
             return;

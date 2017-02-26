@@ -44,7 +44,7 @@ var Screen = React.createClass({
                 if (valid) {
                     this.state.c1.width = this.state.video_el.videoWidth;
                     this.state.c1.height = this.state.video_el.videoHeight;
-                    this.setState({"video_stage": this.state.video_stage + 1});
+                    this.increment("video_stage");
                     console.log("Video obtained");
                     clearInterval(interval_id);
                 }
@@ -53,7 +53,7 @@ var Screen = React.createClass({
         );
 
         console.log("Waiting for video...");
-        this.setState({"video_stage": this.state.video_stage + 1});
+        this.increment("video_stage")
 
         this.timerCallback();
     },

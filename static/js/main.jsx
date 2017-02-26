@@ -58,7 +58,7 @@ function messageFromData(data) {
     var message = '',
         user = render_user(data.user);
     if (user) {
-        message = `<{$user}> : ${message}`;
+        message = `<${user}> : `;
     }
 
     if (data.status < 1) {

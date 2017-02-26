@@ -108,13 +108,13 @@ var Screen = React.createClass({
     },
 
     componentWillReceiveProps(nextProps, nextContext) {
-        if (this.props.source_id === null || this.props.source_id != nextProps.source_id) {
+        if (this.props.source_id != nextProps.source_id) {
             this.setState({
                 "camera_stage": 0,
                 "video_stage": 0
             });
             this.increment('camera_stage');
-            getUserMedia(this.props.source_id).then(
+            getUserMedia(nextProps.source_id).then(
                 this.gum_success, this.gum_failure
             )
         }

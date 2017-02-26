@@ -32,25 +32,31 @@ var Options = React.createClass({
 
         return (
             <Row>
-                <div className="panel" style={{height: "100px"}}>
-                    <div className="small-3 columns">
-                        <button
-                            onClick={this.logout}
-                            className="btn">
-                                Logout
-                        </button>
-                    </div>
-                    <div className="small-6 columns">
-                        <select onChange={this.onChange}>
-                            {options}
-                        </select>
-                    </div>
-                    <div className="small-3 columns">
-                        <button
-                            onClick={this.props.flip}
-                            className="btn">
-                                Flip
-                        </button>
+                <div className="panel" style={{height: "200px"}}>
+                    <div className="columns">
+                        <div className="row">
+                            <div className="small-6 columns">
+                                <button
+                                    onClick={this.logout}
+                                    className="btn">
+                                        Logout
+                                </button>
+                            </div>
+                            <div className="small-6 columns">
+                                <button
+                                    onClick={this.props.flip}
+                                    className="btn right">
+                                        Flip
+                                </button>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="small-12 columns">
+                                <select onChange={this.onChange}>
+                                    {options}
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </Row>

@@ -38,9 +38,9 @@ function render_user(user) {
         lastName = user.last_name,
         rendered = "";
 
-    if (firstName.length > 0) {
+    if (firstName) {
         rendered = firstName;
-        if (lastName.length > 0) {
+        if (lastName) {
             rendered += ' ' + lastName;
         }
     }
@@ -57,12 +57,12 @@ function was_successful(data) {
 function messageFromData(data) {
     var message = '',
         user = render_user(data.user);
-    if (user.length !== 0) {
+    if (user) {
         message = `<{$user}> : ${message}`;
     }
 
     if (data.status < 1) {
-        if (data.error.length === 0) {
+        if (!data.error) {
             message += "Unknown error occured";
         } else {
             message += data.error;

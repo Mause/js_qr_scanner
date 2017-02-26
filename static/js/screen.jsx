@@ -1,4 +1,5 @@
 var Screen = React.createClass({
+    STATUSES: ['camera', 'video'],
     propTypes: {
         "onFrame": React.PropTypes.func,
         "flip": React.PropTypes.bool,
@@ -107,9 +108,8 @@ var Screen = React.createClass({
     },
 
     render() {
-        var statuses = ['camera', 'video']
-        statuses = statuses.map((name) => {
-            <span>
+        var status_values = this.STATUSES.map(name => {
+            <span key={name}>
                 <div style={{float: 'left'}}>{name}: </div>
                 <StatusCube status={this.state[name + '_stage']}/>
             </span>
@@ -124,7 +124,7 @@ var Screen = React.createClass({
                 </canvas>
                 <video src={this.state.src} autoPlay={true} id="video"></video>
                 <div>
-                    {statuses}
+                    {status_values}
                     <br/>
                 </div>
             </div>

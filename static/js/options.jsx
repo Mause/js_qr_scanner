@@ -20,16 +20,15 @@ var Options = React.createClass({
     },
 
     componentWillMount() {
-        getSources().then((sources) => {
-            sources = _.where(sources, {kind: "video"})
-            this.setState({"sources": sources})
+        return getVideoSources().then(sources => {
+            this.setState({'sources': sources});
         })
     },
 
     render() {
-        var options = this.state.sources.map((src) => {
-            return <option key={src.id} value={src.id}>{src.label}</option>;
-        })
+        var options = this.state.sources.map(
+            src => <option key={src.deviceId} value={src.deviceId}>{src.label}</option>
+        );
 
         return (
             <Row>

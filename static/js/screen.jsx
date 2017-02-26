@@ -107,6 +107,19 @@ var Screen = React.createClass({
         "filter": "FlipH"
     },
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (this.props.source_id === null || this.props.source_id != nextProps.source_id) {
+            this.setState({
+                "camera_stage": 0,
+                "video_stage": 0
+            });
+            this.increment('camera_stage');
+            getUserMedia(this.props.source_id).then(
+                this.gum_success, this.gum_failure
+            )
+        }
+    },
+
     render() {
         var status_values = this.STATUSES.map(name => {
             <span key={name}>

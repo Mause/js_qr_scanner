@@ -1,12 +1,13 @@
 {
+
   "10168$$c69c$$Unknown": {
     "desc": "All good",
     "response": {
       "paid": 1,
       "status": 1,
       "user": {
-        "firstName": "First name",
-        "lastName": "Last name"
+        "first_name": "First name",
+        "last_name": "Last name"
       }
     }
   },

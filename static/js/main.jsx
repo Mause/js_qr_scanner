@@ -108,16 +108,16 @@ function get_timestamp(d) {
 
 
 var StatusCube = React.createClass({
+    COLOURS: ["red", "orange", "green"],
     propTypes: {
         "status": React.PropTypes.number.isRequired
     },
     render() {
-        var color = ["red", "orange", "green"][this.props.status];
         var style = {
             "width": "25px",
             "height": "25px",
             "float": 'left',
-            "backgroundColor": color
+            "backgroundColor": this.COLOURS[this.props.status]
         };
         return (
             <div style={style}></div>

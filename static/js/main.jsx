@@ -34,15 +34,14 @@ var Mock = {
 function render_user(user) {
     if (typeof user === "undefined") return "";
 
-    var user = user.user,
-        firstName = user.first_name,
+    var firstName = user.first_name,
         lastName = user.last_name,
         rendered = "";
 
     if (firstName.length > 0) {
         rendered = firstName;
         if (lastName.length > 0) {
-            rendered += lastName;
+            rendered += ' ' + lastName;
         }
     }
 

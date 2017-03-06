@@ -151,7 +151,7 @@ application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/ticket/signin", Handler),
     (r"/tests", TestsHandler),
-    (r"/.well-known/acme-challenge/?", LetsEncryptHandler)
+    (r"/.well-known/acme-challenge.*", LetsEncryptHandler)
     # (r"/(.*)", tornado.web.StaticFileHandler, {"path": dirname(__file__)})
 ], **settings)
 

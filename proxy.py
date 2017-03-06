@@ -132,6 +132,15 @@ class Handler(tornado.web.RequestHandler):
     get = do(requests.get)
     post = do(requests.post)
 
+
+class LetsEncryptHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write(os.environ.get(
+            'LETS_ENCRYPT_CHALLENGE',
+            'not set'
+        ))
+
+
 settings = {
     'debug': True,
     'static_path': 'static',
@@ -142,6 +151,7 @@ application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/ticket/signin", Handler),
     (r"/tests", TestsHandler),
+    (r"/.well-known/acme-challenge/?", LetsEncryptHandler)
     # (r"/(.*)", tornado.web.StaticFileHandler, {"path": dirname(__file__)})
 ], **settings)
 

@@ -65,6 +65,9 @@ def build_bundles():
         ),
         output='gen/packed.js'
     )
+    js.config.babel_options = {
+        'highlightCode': False,
+    }
     my_env.register('js_all', js)
     deps = Bundle(
         "js/vendor/jquery.dev.js",

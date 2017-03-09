@@ -85,12 +85,16 @@ def build_bundles():
 
 
 def get_urls():
-    urls = my_env['js_all'].urls()
-    deps = my_env['deps'].urls()
+    try:
+        urls = my_env['js_all'].urls()
+        deps = my_env['deps'].urls()
 
-    print(urls + deps)
+        print(urls + deps)
 
-    return deps + urls
+        return deps + urls
+    except FilterError as e:
+        e.args = (e.args[0].replace('\\n', '\n'),)
+        raise e
 
 
 class MainHandler(tornado.web.RequestHandler):

@@ -6,7 +6,6 @@
 </head>
 <body>
     <div id="box">
-        {% set first = list(tests.items())[0] %}
         <div>
             <img id="img" width="300" height="300" src="{{first[1]['img']}}"/>
             <p>
@@ -19,11 +18,11 @@
     <select id="image_sel" onchange="javascript:reselect()">
         {% for name, data in tests.items() %}
             <option value="{{name}}">{{data['desc']}}</option>
-        {% end %}
+        {% endfor %}
     </select>
 
     <script>
-        var tests = {% raw json_encode(tests) %},
+        var tests = {{ tests | tojson | safe }},
             div = document.getElementById('box'),
             sel = document.getElementById('image_sel'),
             get = function(name) {return div.querySelector('#' + name)};

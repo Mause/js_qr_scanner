@@ -11,13 +11,15 @@ from os.path import join, exists, expandvars
 
 import qrcode
 import requests
+
 import tornado.web
 import tornado.ioloop
 import tornado.options
+
+from webassets_babel import BabelFilter
 from webassets import Environment, Bundle
 from webassets.exceptions import FilterError
 from webassets.filter import register_filter
-from webassets_babel import BabelFilter
 
 
 tornado.options.parse_command_line()

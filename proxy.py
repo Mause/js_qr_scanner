@@ -24,7 +24,7 @@ tornado.options.parse_command_line()
 logging.basicConfig(level=logging.DEBUG)
 
 my_env = Environment(directory='static/', url='static/')
-my_env.debug = False
+my_env.debug = 'HEROKU' not in os.environ
 
 
 if platform.system() == 'Windows':
@@ -145,7 +145,7 @@ class LetsEncryptHandler(tornado.web.RequestHandler):
 
 
 settings = {
-    'debug': True,
+    'debug': my_env.debug,
     'static_path': 'static',
     'template_path': 'templates',
 }

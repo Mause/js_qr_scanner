@@ -7,27 +7,23 @@ import base64
 import logging
 import platform
 from io import BytesIO
+from pprint import pprint
 from os.path import join, exists, expandvars
 
+import flask
 import qrcode
 import requests
-
-import tornado.web
-import tornado.ioloop
-import tornado.options
 
 from webassets_babel import BabelFilter
 from webassets import Environment, Bundle
 from webassets.exceptions import FilterError
 from webassets.filter import register_filter
 
-
-tornado.options.parse_command_line()
 logging.basicConfig(level=logging.DEBUG)
 
+app = flask.Flask(__name__)
 my_env = Environment(directory='static/', url='static/')
 my_env.debug = 'HEROKU' not in os.environ
-
 
 if platform.system() == 'Windows':
     npm = expandvars('%AppData%/npm')
@@ -91,7 +87,7 @@ def get_urls():
         urls = my_env['js_all'].urls()
         deps = my_env['deps'].urls()
 
-        print(urls + deps)
+        pprint(urls + deps)
 
         return deps + urls
     except FilterError as e:
@@ -99,9 +95,9 @@ def get_urls():
         raise e
 
 
-class MainHandler(tornado.web.RequestHandler):
-    def get(self):
-        return self.render('index.html', urls=get_urls())
+@app.route("/")
+def index():
+    return flask.render_template('index.html', urls=get_urls())
 
 
 def build_image(data):
@@ -114,61 +110,42 @@ def build_image(data):
     return b'data:image/png;base64,' + b64
 
 
-class TestsHandler(tornado.web.RequestHandler):
-    def get(self):
-        with open('static/tests.json') as fh:
-            tests = json.load(fh)
+@app.route("/tests")
+def tests():
+    with open('static/tests.json') as fh:
+        tests = json.load(fh)
 
-        images = {
-            k: {
-                "desc": v['desc'],
-                "img": build_image(k).decode()
-            }
-            for k, v in tests.items()
+    images = {
+        k: {
+            "desc": v['desc'],
+            "img": build_image(k).decode()
         }
+        for k, v in tests.items()
+    }
 
-        return self.render('tests.html', tests=images)
-
-
-def do(func):
-    def handler(self):
-        r = func(
-            'http://events.rflan.org/ticket/signin',
-            params=self.request.arguments
-        )
-        if not r.ok:
-            print(r.text)
-            raise tornado.web.HTTPError(r.status_code)
-        self.write(r.text)
-    return handler
+    return flask.render_template('tests.html', tests=images)
 
 
-class Handler(tornado.web.RequestHandler):
-    get = do(requests.get)
-    post = do(requests.post)
+@app.route("/ticket/signin")
+def proxy_signin():
+    r = requests.request(
+        flask.request.method,
+        'http://events.rflan.org/ticket/signin',
+        params=flask.request.args
+    )
+    if not r.ok:
+        print(r.text)
+        raise flask.HTTPError(r.status_code)
+    return r.text
 
 
-class LetsEncryptHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.write(os.environ.get(
-            'LETS_ENCRYPT_CHALLENGE',
-            'not set'
-        ))
+@app.route(r"/.well-known/acme-challenge.*")
+def lets_encrypt():
+    return os.environ.get(
+        'LETS_ENCRYPT_CHALLENGE',
+        'not set'
+    )
 
-
-settings = {
-    'debug': my_env.debug,
-    'static_path': 'static',
-    'template_path': 'templates',
-}
-
-application = tornado.web.Application([
-    (r"/", MainHandler),
-    (r"/ticket/signin", Handler),
-    (r"/tests", TestsHandler),
-    (r"/.well-known/acme-challenge.*", LetsEncryptHandler)
-    # (r"/(.*)", tornado.web.StaticFileHandler, {"path": dirname(__file__)})
-], **settings)
 
 if __name__ == '__main__':
     print('building bundles')
@@ -176,8 +153,4 @@ if __name__ == '__main__':
     get_urls()
     print('bundles built')
 
-    port, host = os.environ.get("PORT", 8888), '0.0.0.0'
-    print('{}:{}'.format(host, port))
-    application.listen(port, address=host)
-
-    tornado.ioloop.IOLoop.instance().start()
+    app.run('0.0.0.0', os.environ.get("PORT", 8888), my_env.debug)

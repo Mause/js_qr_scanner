@@ -84,12 +84,18 @@ def build_bundles():
     return my_env
 
 
+def get_urls():
+    urls = my_env['js_all'].urls()
+    deps = my_env['deps'].urls()
+
+    print(urls + deps)
+
+    return deps + urls
+
+
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        urls = my_env['js_all'].urls()
-        deps = my_env['deps'].urls()
-
-        return self.render('index.html', urls=urls, deps=deps)
+        return self.render('index.html', urls=get_urls())
 
 
 def build_image(data):

@@ -169,8 +169,9 @@ application = tornado.web.Application([
 ], **settings)
 
 if __name__ == '__main__':
+    print('building bundles')
     build_bundles()
-    my_env['js_all'].urls()
+    get_urls()
     print('bundles built')
 
     port, host = os.environ.get("PORT", 8888), '0.0.0.0'
